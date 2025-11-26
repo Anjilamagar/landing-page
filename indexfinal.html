@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Commerce Homepage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-up {
+            animation: fadeUp 0.9s ease forwards;
+        }
+
+        /* Category panels styles */
+        .category-panel {
+            position: relative;
+            min-height: 500px;
+            min-width: 300px;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (min-width: 768px) {
+            .category-panel {
+                min-width: calc(33.333% - 1rem);
+            }
+        }
+
+        .category-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.3);
+        }
+
+        .category-bg-image {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            transition: opacity 0.4s ease;
+        }
+
+        .category-panel:hover .category-bg-image {
+            opacity: 0.5;
+        }
+
+        .category-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+            z-index: 1;
+        }
+
+        .category-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+        }
+
+        .category-title {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--purple-light);
+            text-shadow: 2px 2px 8px rgba(168, 85, 247, 0.6);
+            margin-bottom: 1rem;
+        }
+
+        .category-shop-btn {
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-shop-btn:hover {
+            transform: translateX(5px);
+            color: var(--purple-light);
+        }
+
+        /* Hamburger menu dropdown */
+        .hamburger-menu-wrapper {
+            position: relative;
+        }
+
+        .hamburger-menu-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            width: 300px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(168, 85, 247, 0.3);
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 50;
+            margin-top: 2px;
+        }
+
+        /* .hamburger-menu-wrapper:hover .hamburger-menu-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        } */
+
+        /* Hero section adjustments */
+        .hero-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            height: 100%;
+            padding: 2rem;
+        }
+
+        .hero-text-container {
+            max-width: 60%;
+        }
+
+        .hero-button-container {
+            margin-top: 2rem;
+        }
+
+        .category-scroll-container {
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(168, 85, 247, 0.5) transparent;
+            padding-bottom: 1rem;
+        }
+
+        .category-scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .category-scroll-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .category-scroll-container::-webkit-scrollbar-thumb {
+            background: rgba(168, 85, 247, 0.5);
+            border-radius: 4px;
+        }
+
+        .popular-scroll-wrapper {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .popular-scroll-track {
+            display: flex;
+            animation: continuous-scroll 40s linear infinite;
+        }
+
+        .popular-scroll-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes continuous-scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .product-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-neutral-100 text-neutral-800 font-sans overflow-x-hidden">
+
+    <!-- HEADER -->
+    <header class="bg-white/60 backdrop-blur-xl fixed top-0 w-full z-50 shadow-sm">
+        <nav class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+            <div class="flex items-center gap-3">
+                <div class="w-16  h-16 icon-wrapper overflow-hidden relative p-{-1px}">
+                    <img src="img\logo\logo_high_png[1].png" class="w-24 scale-125" alt="Robotics Logo"
+                        class="w-full h-full object-cover rounded-full border-4 border-purple-400 w-15 border-4 border-purple-400 rounded-xl scale-125 ">
+                </div>
+
+
+                <h1 class="text-4xl font-bold text-black">Robotics</h1>
+            </div>
+            <!-- code for searchbar -->
+            <!-- <div class="relative transition-all duration-300 w-86 hover:w-80">
+    <input 
+        type="text" 
+        placeholder="Search..."
+        class="w-full px-4 py-2 rounded-full border border-[#57349a] bg-white
+               outline-none text-sm
+               focus:ring-2 focus:ring-[#57349a]
+               transition-all duration-300"
+    >
+
+    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-[#57349a] text-lg">
+        🔍
+    </span>
+</div> -->
+
+            <!-- <div class="flex items-center justify-center p-4">
+  
+  <div class="relative flex items-center w-60 h-10 group/search rounded-xl overflow-visible">
+    
+    <div class="absolute inset-0 flex items-center rounded-xl origin-center transition-all duration-300 ease-in-out
+                group-hover/search:scale-110 focus-within:scale-110
+                group-hover/search:backdrop-blur-md focus-within:backdrop-blur-md
+                group-hover/search:border-purple-600 focus-within:border-purple-600
+                group-hover/search:shadow-xl group-hover/search:shadow-purple-700/50
+                border-2 border-transparent bg-white/5">
+      
+      <svg 
+        class="h-5 w-5 ml-3 transition-colors duration-300 text-purple-400 group-hover/search:text-purple-300 group-focus-within:text-purple-300" 
+        xmlns="http://www.w3.org/2000/svg" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor" 
+        stroke-width="2"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      
+      <input 
+        type="text" 
+        placeholder="Search products, collections..." 
+        class="w-full py-2 pl-2 pr-3 text-sm text-white/90 placeholder-purple-300/80 bg-transparent focus:outline-none 
+               text-center transition-all duration-300"
+      />
+    </div>
+  </div>
+</div> -->
+            <!-- <div class="flex items-center justify-center p-6 min-h-[10rem] border-b border-gray-700"> -->
+            <div class="relative flex items-center group/search backdrop-blur-md bg-white/10 rounded-xl border border-purple-800/50 shadow-lg 
+              group-hover/search:shadow-2xl group-hover/search:shadow-purple-700/50 
+              focus-within:shadow-2xl focus-within:shadow-purple-700/50 
+              transition-all duration-500 ease-in-out">
+
+                <svg class="h-3 w-5 ml-4 transition-colors duration-500 ease-in-out text-purple-400 group-hover/search:text-purple-300 group-focus-within/search:text-purple-300"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+
+                <input type="text" placeholder="Search products, collections, or help..." class="w-60 py-3 pr-5 pl-3 text-sm text-purple-900/90 placeholder-purple-300/80 bg-transparent border-none focus:outline-none
+             group-hover/search:w-80 group-focus-within:w-80 
+             text-center transition-all duration-500 ease-in-out" />
+            </div>
+            </div>
+
+
+
+            <!-- <div class="relative transition-all duration-300 w-56 hover:w-80">
+    <input 
+        type="text" 
+        placeholder="Search..."
+        class="w-full px-4 py-2 rounded-full border border-[#57349a]
+               backdrop-blur-md bg-white/30
+               outline-none text-sm text-purple-700 placeholder-white/70
+               focus:ring-2 focus:ring-[#57349a]
+               transition-all duration-300"
+    >
+
+    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-purple-700 text-lg">
+        🔍
+    </span>
+</div> -->
+
+            <!-- <h1 class="text-3xl font-bold tracking-tight text-purple-600">ShopifyX</h1> -->
+
+            <!-- Cart and Login Buttons -->
+            <div class="flex items-center gap-2">
+                <button
+                    class="px-3 py-1 border-2 border-purple-400 hover:bg-purple-500/20 rounded-full font-semibold transition-all text-black-300 hover:text-white text-xs flex items-center gap-1.5 action-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                        </path>
+                    </svg>
+                    cart
+                </button>
+                <button
+                    class="px-3 py-1 border-2 border-purple-400 hover:bg-purple-500/20 rounded-full font-semibold transition-all text-black-300 hover:text-white text-xs flex items-center gap-1.5 action-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    login
+                </button>
+            </div>
+            </div>
+
+
+
+
+            <!-- <ul class="hidden md:flex gap-8 font-medium">
+                <li class="hover:text-purple-600 transition">Home</li>
+                <li class="hover:text-purple-600 transition">Shop</li>
+                <li class="hover:text-purple-600 transition">About</li>
+                <li class="hover:text-purple-600 transition">Contact</li>
+            </ul> -->
+            <button class="md:hidden text-purple-600 text-2xl">☰</button>
+        </nav>
+    </header>
+
+
+    <!-- HERO -->
+    <section class="relative pt-40 pb-28 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-purple-100 to-transparent opacity-60"></div>
+
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
+
+            <div class="flex-1 animate-fade-up">
+                <h2 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6 text-neutral-900">Design the Future-
+                    We Supply the Rest.
+                </h2>
+                <p class="text-lg text-neutral-600 mb-8 max-w-md">High-quality components trusted by robotics
+                    enthusiasts and professionals.</p>
+                <button
+                    class="bg-purple-600 hover:bg-[57349a] text-white px-8 py-3 rounded-xl shadow-lg transition-transform duration-300 hover:scale-[1.06]">Shop
+                    now</button>
+            </div>
+            <!-- zoomin image -->
+            <div class="flex-1 animate-fade-up delay-[.3s]">
+
+                <div
+                    class="w-full h-96 rounded-2xl bg-gradient-to-br from-purple-300 to-purple-500 shadow-2xl 
+         transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_35px_rgba(168,85,247,0.7)] overflow-hidden">
+
+                    <img src="img\picture\banner1.jpg"
+                        class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Category Section -->
+    <section class="max-w-7xl mx-auto px-4 md:px-8 py-12 fade-in-section">
+        <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-8 fade-in-item"
+            style="color: var(--purple-light);">
+            <span
+                style="background: linear-gradient(135deg, var(--purple-light) 0%, var(--purple-accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                Shop by Category
+            </span>
+        </h2>
+        <div class="category-scroll-container flex gap-6" id="categoryScroll">
+            <!-- Category 1: KITS -->
+            <div class="category-panel flex-shrink-0 w-full md:w-1/3 lg:w-1/3 fade-in-item"
+                style="animation-delay: 0.1s;">
+                <div class="category-bg-image" style="background-color: rgba(108, 64, 197, 0.2);">
+                    <div class="w-full h-full flex items-center justify-center">
+                        <i class="fas fa-box text-9xl opacity-30" style="color: var(--purple-light);"></i>
+                    </div>
+                </div>
+                <div class="category-overlay"></div>
+                <div class="category-content">
+                    <h3 class="category-title">KITS</h3>
+                    <a href="#" class="category-shop-btn">
+                        SHOP NOW →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category 2: APPAREL -->
+            <div class="category-panel flex-shrink-0 w-full md:w-1/3 lg:w-1/3 fade-in-item"
+                style="animation-delay: 0.2s;">
+                <div class="category-bg-image" style="background-color: rgba(168, 134, 247, 0.2);">
+                    <div class="w-full h-full flex items-center justify-center">
+                        <i class="fas fa-tshirt text-9xl opacity-30" style="color: var(--purple-light);"></i>
+                    </div>
+                </div>
+                <div class="category-overlay"></div>
+                <div class="category-content">
+                    <h3 class="category-title">APPAREL</h3>
+                    <a href="#" class="category-shop-btn">
+                        SHOP NOW →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category 3: IT & GEARS -->
+            <div class="category-panel flex-shrink-0 w-full md:w-1/3 lg:w-1/3 fade-in-item"
+                style="animation-delay: 0.3s;">
+                <div class="category-bg-image" style="background-color: rgba(108, 64, 197, 0.2);">
+                    <div class="w-full h-full flex items-center justify-center">
+                        <i class="fas fa-laptop text-9xl opacity-30" style="color: var(--purple-light);"></i>
+                    </div>
+                </div>
+                <div class="category-overlay"></div>
+                <div class="category-content">
+                    <h3 class="category-title">IT & GEARS</h3>
+                    <a href="#" class="category-shop-btn">
+                        SHOP NOW →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Placeholder for future categories - can be duplicated -->
+            <div class="category-panel flex-shrink-0 w-full md:w-1/3 lg:w-1/3 fade-in-item"
+                style="animation-delay: 0.4s; display: none;" id="categoryTemplate">
+                <div class="category-bg-image" style="background-color: rgba(168, 134, 247, 0.2);">
+                    <div class="w-full h-full flex items-center justify-center">
+                        <i class="fas fa-box text-9xl opacity-30" style="color: var(--purple-light);"></i>
+                    </div>
+                </div>
+                <div class="category-overlay"></div>
+                <div class="category-content">
+                    <h3 class="category-title">CATEGORY</h3>
+                    <a href="#" class="category-shop-btn">
+                        SHOP NOW →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- FEATURED -->
+    <!-- <section class="py-24 bg-white relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full bg-purple-100 blur-3xl opacity-80">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6">
+            <h3 class="text-4xl font-bold mb-14 text-neutral-900">Featured Products</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div
+                    class="group opacity-0 animate-fade-up delay-100 bg-neutral-50 p-5 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+                    <div class="w-full h-48 bg-purple-300 rounded-lg group-hover:scale-105 transition-transform"></div>
+                    <h4 class="mt-4 font-semibold text-lg">Product Name</h4>
+                    <p class="text-neutral-600 text-sm">$49.00</p>
+                    <button
+                        class="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-semibold transition-transform hover:scale-105">Add
+                        to Cart</button>
+                </div>
+                <div
+                    class="group opacity-0 animate-fade-up delay-100 bg-neutral-50 p-5 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+                    <div class="w-full h-48 bg-purple-300 rounded-lg group-hover:scale-105 transition-transform"></div>
+                    <h4 class="mt-4 font-semibold text-lg">Product Name</h4>
+                    <p class="text-neutral-600 text-sm">$49.00</p>
+                    <button
+                        class="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-semibold transition-transform hover:scale-105">Add
+                        to Cart</button>
+                </div>
+                <div
+                    class="group opacity-0 animate-fade-up delay-100 bg-neutral-50 p-5 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+                    <div class="w-full h-48 bg-purple-300 rounded-lg group-hover:scale-105 transition-transform"></div>
+                    <h4 class="mt-4 font-semibold text-lg">Product Name</h4>
+                    <p class="text-neutral-600 text-sm">$49.00</p>
+                    <button
+                        class="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-semibold transition-transform hover:scale-105">Add
+                        to Cart</button>
+                </div>
+                <div
+                    class="group opacity-0 animate-fade-up delay-100 bg-neutral-50 p-5 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+                    <div class="w-full h-48 bg-purple-300 rounded-lg group-hover:scale-105 transition-transform"></div>
+                    <h4 class="mt-4 font-semibold text-lg">Product Name</h4>
+                    <p class="text-neutral-600 text-sm">$49.00</p>
+                    <button
+                        class="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-semibold transition-transform hover:scale-105">Add
+                        to Cart</button>
+                </div>
+
+                <div
+                    class="group opacity-0 animate-fade-up delay-100 bg-neutral-50 p-5 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+                    <div class="w-full h-48 bg-purple-300 rounded-lg group-hover:scale-105 transition-transform"></div>
+                    <h4 class="mt-4 font-semibold text-lg">Product Name</h4>
+                    <p class="text-neutral-600 text-sm">$49.00</p>
+                    <button
+                        class="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-semibold transition-transform hover:scale-105">Add
+                        to Cart</button>
+                </div>
+
+                <div
+                    class="group opacity-0 animate-fade-up delay-200 bg-neutral-50 p-5 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+                    <div class="w-full h-48 bg-purple-300 rounded-lg group-hover:scale-105 transition-transform"></div>
+                    <h4 class="mt-4 font-semibold text-lg">Product Name</h4>
+                    <p class="text-neutral-600 text-sm">$79.00</p>
+                    <button
+                        class="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-semibold transition-transform hover:scale-105">Add
+                        to Cart</button>
+                </div>
+
+                <div
+                    class="group opacity-0 animate-fade-up delay-300 bg-neutral-50 p-5 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+                    <div class="w-full h-48 bg-purple-300 rounded-lg group-hover:scale-105 transition-transform"></div>
+                    <h4 class="mt-4 font-semibold text-lg">Product Name</h4>
+                    <p class="text-neutral-600 text-sm">$35.00</p>
+                    <button
+                        class="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-semibold transition-transform hover:scale-105">Add
+                        to Cart</button>
+                </div>
+
+                <div
+                    class="group opacity-0 animate-fade-up delay-500 bg-neutral-50 p-5 rounded-xl shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+                    <div class="w-full h-48 bg-purple-300 rounded-lg group-hover:scale-105 transition-transform"></div>
+                    <h4 class="mt-4 font-semibold text-lg">Product Name</h4>
+                    <p class="text-neutral-600 text-sm">$99.00</p>
+                    <button
+                        class="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-semibold transition-transform hover:scale-105">Add
+                        to Cart</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+ -->
+
+    <section class="py-20 sm:py-32 bg-gray-50/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="mb-16 text-center">
+                <h2 class="text-5xl font-extrabold tracking-tighter text-gray-900 sm:text-6xl font-sans">
+                    Featured Collection
+                </h2>
+                <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+                    Top-rated robotics components curated for makers, innovators, and tech enthusiasts.
+                </p>
+            </div>
+
+            <style>
+                /* Custom scrollbar */
+                #carousel::-webkit-scrollbar {
+                    height: 8px;
+                }
+
+                #carousel::-webkit-scrollbar-track {
+                    background: #e5e7eb;
+                    /* gray-200 */
+                    border-radius: 4px;
+                }
+
+                #carousel::-webkit-scrollbar-thumb {
+                    background-color: #7c3aed;
+                    /* purple-600 */
+                    border-radius: 4px;
+                    border: 2px solid #e5e7eb;
+                }
+
+                #carousel {
+                    scrollbar-width: thin;
+                    scrollbar-color: #7c3aed #e5e7eb;
+                }
+
+                .hide-scrollbar {
+                    scroll-snap-type: x mandatory;
+                    cursor: grab;
+                }
+
+                .hide-scrollbar:active {
+                    cursor: grabbing;
+                }
+            </style>
+
+            <div id="carousel"
+                class="flex overflow-x-scroll pb-4 space-x-12 hide-scrollbar scroll-snap-x scroll-mandatory lg:space-x-16">
+
+                <!-- Product 1 -->
+                <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+                    <div
+                        class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+                        <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+                            <img src="products\yazi robo.jpg" alt="yazi robot"
+                                class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+                            <span
+                                class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-indigo-600 text-white rounded-full shadow-lg tracking-wider">Limited
+                                Edition</span>
+                        </div>
+                        <div class="p-8 sm:p-12">
+                            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">Signature
+                                Accessories</h3>
+                            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">The YAZI ROBOT</h4>
+                            <p class="text-4xl font-extrabold text-gray-700 mb-6">Rs. 999</p>
+                            <button
+                                class="w-full py-4 bg-purple-700 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">View
+                                details →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+                    <div
+                        class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+                        <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+                            <img src="products\emo.webp" alt="Emo robot"
+                                class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+                            <span
+                                class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-green-600 text-white rounded-full shadow-lg tracking-wider">New
+                                Release</span>
+                        </div>
+                        <div class="p-8 sm:p-12">
+                            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">AI ROBOT
+                            </h3>
+                            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">The EMO Robo</h4>
+                            <p class="text-4xl font-extrabold text-gray-700 mb-6">Rs. 5599</p>
+                            <button
+                                class="w-full py-4 bg-purple-700 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">View
+                                details →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+                    <div
+                        class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+                        <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+                            <img src="products\Robotics-Starter-Kit.jpg" alt="robotic kit"
+                                class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+                            <span
+                                class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-gray-800 text-white rounded-full shadow-lg tracking-wider">Best
+                                Seller</span>
+                        </div>
+                        <div class="p-8 sm:p-12">
+                            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">Robotic
+                                parts</h3>
+                            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">Robotic starter kit</h4>
+                            <p class="text-4xl font-extrabold text-gray-700 mb-6">Rs. 799</p>
+                            <button
+                                class="w-full py-4 bg-purple-700 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">View
+                                details →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+                    <div
+                        class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+                        <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+                            <img src="products\lego.jpg" alt="Lego robot parts"
+                                class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+                            <span
+                                class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-purple-600 text-white rounded-full shadow-lg tracking-wider">Classic</span>
+                        </div>
+                        <div class="p-8 sm:p-12">
+                            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">Robotics
+                                tools</h3>
+                            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">LEGO robot parts</h4>
+                            <p class="text-4xl font-extrabold text-gray-700 mb-6">Rs. 599</p>
+                            <button
+                                class="w-full py-4 bg-purple-700 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">View
+                                details →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+                    <div
+                        class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+                        <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+                            <img src="products\microchip.jpg" alt="Micro Chip"
+                                class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+                            <span
+                                class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-yellow-600 text-white rounded-full shadow-lg tracking-wider">Limited
+                                Stock</span>
+                        </div>
+                        <div class="p-8 sm:p-12">
+                            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">Computer
+                                parts</h3>
+                            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">Micro chip</h4>
+                            <p class="text-4xl font-extrabold text-gray-700 mb-6">Rs. 500</p>
+                            <button
+                                class="w-full py-4 bg-purple-700 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">View
+                                details →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+                    <div
+                        class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+                        <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+                            <img src="products\robotic arm.jpg" alt="products\robotic arm.jpg"
+                                class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+                            <span
+                                class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-pink-600 text-white rounded-full shadow-lg tracking-wider">Trending</span>
+                        </div>
+                        <div class="p-8 sm:p-12">
+                            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">Robotics
+                                tools </h3>
+                            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">Robot arm</h4>
+                            <p class="text-4xl font-extrabold text-gray-700 mb-6">Rs. 300</p>
+                            <button
+                                class="w-full py-4 bg-purple-700 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">View
+                                details →</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        const carousel = document.getElementById('carousel');
+        let isDragging = false;
+        let startX, scrollLeft;
+        let scrollAmount = 0;
+        const scrollStep = 2;
+        const scrollInterval = 20;
+
+        // Auto-scroll
+        function autoScroll() {
+            if (!isDragging) {
+                scrollAmount += scrollStep;
+                if (scrollAmount >= carousel.scrollWidth - carousel.clientWidth) scrollAmount = 0;
+                carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
+
+        let scrollTimer = setInterval(autoScroll, scrollInterval);
+
+        // Pause auto-scroll on hover
+        carousel.addEventListener('mouseenter', () => scrollTimer && clearInterval(scrollTimer));
+        carousel.addEventListener('mouseleave', () => scrollTimer = setInterval(autoScroll, scrollInterval));
+
+        // Drag functionality
+        carousel.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+            carousel.classList.add('cursor-grabbing');
+        });
+        carousel.addEventListener('mouseleave', () => { isDragging = false; carousel.classList.remove('cursor-grabbing'); });
+        carousel.addEventListener('mouseup', () => { isDragging = false; carousel.classList.remove('cursor-grabbing'); });
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - carousel.offsetLeft;
+            const walk = (startX - x) * 2; // scroll-fast
+            carousel.scrollLeft = scrollLeft + walk;
+        });
+
+        // Touch support
+        carousel.addEventListener('touchstart', (e) => { isDragging = true; startX = e.touches[0].pageX - carousel.offsetLeft; scrollLeft = carousel.scrollLeft; });
+        carousel.addEventListener('touchend', () => isDragging = false);
+        carousel.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const x = e.touches[0].pageX - carousel.offsetLeft;
+            const walk = (startX - x) * 2;
+            carousel.scrollLeft = scrollLeft + walk;
+        });
+    </script>
+
+    <!-- <section class="py-20 sm:py-32 bg-gray-50/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="mb-16 text-center">
+      <h2 class="text-5xl font-extrabold tracking-tighter text-gray-900 sm:text-6xl font-sans">
+        Signature Collection
+      </h2>
+      <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+        Exclusively curated items designed for impact and endurance in the professional sphere.
+      </p>
+    </div>
+    
+    <style>
+      /* Custom CSS to forcibly hide scrollbars in Webkit browsers (Chrome, Safari, Edge) */
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      /* Optional: Cursor change to suggest drag-ability */
+      .hide-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+        scroll-padding-left: 2rem; /* Adds padding to the scroll start/end */
+        scroll-snap-type: x mandatory; 
+        /* The cursor changes to signal the user can grab/drag */
+        cursor: grab; 
+      }
+      /* Optional: Change cursor to grabbing when active, typically done with JS, but added for visual intent */
+      .hide-scrollbar:active {
+        cursor: grabbing;
+      }
+    </style>
+    
+    <div class="flex overflow-x-scroll pb-16 space-x-12 hide-scrollbar scroll-snap-x scroll-mandatory lg:space-x-16">
+        
+      <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+        <div class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+          
+          <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+            
+            <img src="https://images.unsplash.com/photo-1543269869-21b6d910a5a3?w=1200&auto=format&fit=crop" alt="Premium Leather Briefcase" class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+            
+            <span class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-indigo-600 text-white rounded-full shadow-lg tracking-wider">
+                Limited Edition
+            </span>
+          </div>
+
+          <div class="p-8 sm:p-12">
+            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">
+              Signature Accessories
+            </h3>
+            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">
+              The Executive Satchel V2
+            </h4>
+            <p class="text-4xl font-extrabold text-gray-700 mb-6">
+              $980
+            </p>
+            
+            <button class="w-full py-4 bg-gray-900 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">
+              Explore Craftsmanship →
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+        <div class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+          
+          <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+            
+            <img src="https://images.unsplash.com/photo-1577977465366-218080f4f9f7?w=1200&auto=format&fit=crop" alt="Minimalist Smart Watch" class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+            
+            <span class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-green-600 text-white rounded-full shadow-lg tracking-wider">
+                New Release
+            </span>
+          </div>
+
+          <div class="p-8 sm:p-12">
+            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">
+              Wearable Tech
+            </h3>
+            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">
+              Apex Smart Chronos
+            </h4>
+            <p class="text-4xl font-extrabold text-gray-700 mb-6">
+              $399
+            </p>
+            
+            <button class="w-full py-4 bg-gray-900 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">
+              Explore Functionality →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+        <div class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+          
+          <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+            
+            <img src="https://images.unsplash.com/photo-1546435770-58d04e183707?w=1200&auto=format&fit=crop" alt="High-end Noise Cancelling Headphones" class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+            
+            <span class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-gray-800 text-white rounded-full shadow-lg tracking-wider">
+                Best Seller
+            </span>
+          </div>
+
+          <div class="p-8 sm:p-12">
+            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">
+              Audio Solutions
+            </h3>
+            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">
+              Serenity Headset Pro
+            </h4>
+            <p class="text-4xl font-extrabold text-gray-700 mb-6">
+              $549
+            </p>
+            
+            <button class="w-full py-4 bg-gray-900 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">
+              Explore Noise Cancellation →
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section> -->
+
+
+    <!-- <section class="py-20 sm:py-32 bg-gray-50/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="mb-16 text-center">
+      <h2 class="text-5xl font-extrabold tracking-tighter text-gray-900 sm:text-6xl font-sans">
+        Signature Collection
+      </h2>
+      <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+        Exclusively curated items designed for impact and endurance in the professional sphere.
+      </p>
+    </div>
+    
+    <div class="flex overflow-x-scroll pb-16 space-x-12 scroll-snap-x scroll-mandatory scrollbar-hide lg:space-x-16">
+        
+      <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+        <div class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+          
+          <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+            <img src="https://images.unsplash.com/photo-1543269869-21b6d910a5a3?w=1200&auto=format&fit=crop" alt="Premium Leather Briefcase" class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+            
+            <span class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-indigo-600 text-white rounded-full shadow-lg tracking-wider">
+                Limited Edition
+            </span>
+          </div>
+
+          <div class="p-8 sm:p-12">
+            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">
+              Signature Accessories
+            </h3>
+            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">
+              The Executive Satchel V2
+            </h4>
+            <p class="text-4xl font-extrabold text-gray-700 mb-6">
+              $980
+            </p>
+            
+            <button class="w-full py-4 bg-gray-900 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">
+              Explore Craftsmanship →
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+        <div class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+          
+          <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+            <img src="https://images.unsplash.com/photo-1577977465366-218080f4f9f7?w=1200&auto=format&fit=crop" alt="Minimalist Smart Watch" class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+            
+            <span class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-green-600 text-white rounded-full shadow-lg tracking-wider">
+                New Release
+            </span>
+          </div>
+
+          <div class="p-8 sm:p-12">
+            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">
+              Wearable Tech
+            </h3>
+            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">
+              Apex Smart Chronos
+            </h4>
+            <p class="text-4xl font-extrabold text-gray-700 mb-6">
+              $399
+            </p>
+            
+            <button class="w-full py-4 bg-gray-900 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">
+              Explore Functionality →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-shrink-0 w-11/12 md:w-3/4 lg:w-[40rem] snap-center">
+        <div class="bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition duration-500 ease-in-out transform hover:-translate-y-3 group cursor-pointer border border-gray-100">
+          
+          <div class="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-gray-100">
+            <img src="https://images.unsplash.com/photo-1546435770-58d04e183707?w=1200&auto=format&fit=crop" alt="High-end Noise Cancelling Headphones" class="w-full h-full object-cover object-center transition duration-700 ease-in-out group-hover:scale-105">
+            
+            <span class="absolute top-6 left-6 inline-flex items-center px-4 py-2 text-sm font-bold bg-gray-800 text-white rounded-full shadow-lg tracking-wider">
+                Best Seller
+            </span>
+          </div>
+
+          <div class="p-8 sm:p-12">
+            <h3 class="text-xl font-semibold text-indigo-600 uppercase tracking-widest mb-2">
+              Audio Solutions
+            </h3>
+            <h4 class="text-4xl font-extrabold text-gray-900 mb-4">
+              Serenity Headset Pro
+            </h4>
+            <p class="text-4xl font-extrabold text-gray-700 mb-6">
+              $549
+            </p>
+            
+            <button class="w-full py-4 bg-gray-900 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 ease-in-out transform translate-y-0 group-hover:scale-[1.01]">
+              Explore Noise Cancellation →
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section> -->
+
+    <!-- Customization Section -->
+    <!-- <section class="max-w-7xl mx-auto px-4 md:px-8 py-12 fade-in-section flex justify-end">
+
+
+        <div class="border-2 bg-purple-100 p-8 inline-block cursor-pointer fade-in-item 
+            transition-all duration-300 transform hover:scale-[1.05] 
+            hover:shadow-[0_0_20px_rgba(147,51,234,0.5)] hover:border-purple-400">
+            <p class="text-2xl font-bold mb-2" style="color: var(--purple-light);">
+                Can't Find What You Need?
+            </p>
+            <p class="text-xl font-semibold" style="color: var(--text-light);">
+                Request Here →
+            </p>
+        </div> -->
+
+    <section class="max-w-7xl mx-auto px-4 md:px-8 py-0 flex justify-center">
+        <div class="relative group">
+            <!-- Card -->
+            <div
+                class="bg-white border-2 border-purple-300 rounded-3xl p-8 md:p-10 shadow-lg transition-transform duration-300 transform hover:-translate-y-2 hover:scale-[1.03] hover:shadow-2xl cursor-pointer w-full max-w-sm">
+
+                <!-- Badge / Highlight -->
+                <span
+                    class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-md">
+                    Need Help?
+                </span>
+
+                <!-- Title -->
+                <h3 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">
+                    Can't Find What You Need?
+                </h3>
+
+                <!-- Subtitle / Call to Action -->
+                <p class="text-lg md:text-xl text-gray-700 mb-6">
+                    Submit a request and our team will assist you promptly.
+                </p>
+
+                <!-- Button -->
+                <button
+                    class="w-full py-3 md:py-4 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition-all duration-300 ease-in-out">
+                    Request Here →
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- <div class=" border-2 bg-purple-100 p-8 inline-block cursor-pointer fade-in-item">
+            <p class="text-2xl font-bold mb-2" style="color: var(--purple-light);">
+                Can't Find What You Need?
+            </p>
+            <p class="text-xl font-semibold" style="color: var(--text-light);">
+                Request Here →
+            </p>
+        </div> -->
+    </section>
+
+
+
+
+
+    <footer class="glass-effect border-t border-brand-light/30 footer-blend overflow-hidden mt-12">
+        <div class="container mx-auto px-4 md:px-8 py-8 md:py-12">
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-y-10 gap-x-8">
+                <!-- Branding -->
+                <div class="col-span-2 md:col-span-2 space-y-4 pr-8">
+                    <div class="flex items-center space-x-2">
+
+                        <div>
+
+                            <img src="img\logo\logo_high_png[1].png" alt="Robotics Logo" class="h-16 w-16" />
+                        </div>
+
+                        <!-- <div
+                            class="w-10 h-10 md:w-16 md:h-16 lg:w-20 lg:h-20 aspect-square rounded-full border-2 md:border-4 border-brand-light/70 flex items-center justify-center bg-brand-dark/20 overflow-hidden glow-link">
+                            <img src="img\logo\logo_high_png[1].png" alt="Robotics Logo"
+                                class="w-full h-full object-contain aspect-square rounded-full">
+                        </div> -->
+                        <span class="text-2xl font-bold tracking-tight glow-link">ROBOTICS</span>
+                    </div>
+                    <p class="text-sm text-black max-w-xs">
+                        Elevating digital experiences with intuitive design and powerful technology.
+                    </p>
+                    <!-- <a href="#newsletter"
+                        class="inline-block px-4 py-2 text-sm font-semibold bg-brand-light hover:bg-brand-dark text-brand-dark rounded-lg transition duration-300 shadow-lg glow-btn">
+                        Join Our Newsletter
+                    </a> -->
+                </div>
+
+                <!-- Company Links -->
+                <div class="col-span-1">
+                    <h3
+                        class="text-lg font-bold mb-4 text-white-400 glow-link bg-purple-500 text-white px-1 py-1 rounded-lg text-center">
+                        Company</h3>
+                    <ul class="space-y-3 text-sm ">
+                        <li><a href="#" class="text-black glow-link">About Us</a></li>
+                        <li><a href="#" class="text-black glow-link">Careers (We're Hiring!)</a></li>
+                        <li><a href="#" class="text-black glow-link">Our Team</a></li>
+                        <li><a href="#" class="text-black glow-link">Press & Media</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources Links -->
+                <div class="col-span-1">
+                    <h3
+                        class="text-lg font-semibold mb-4 text-brand-light glow-link bg-purple-500 text-white px-1 py-1 rounded-lg text-center">
+                        Resources</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class=" text-black glow-link">Developer Docs</a></li>
+                        <li><a href="#" class=" text-black glow-link">Customer Support</a></li>
+                        <li><a href="#" class="text-black glow-link">FAQ</a></li>
+                        <li><a href="#" class="text-black glow-link">Product Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="col-span-2 md:col-span-2 space-y-4">
+                    <h3
+                        class=" w-40 h-10 text-lg font-semibold mb-4 text-brand-light glow-link bg-purple-500 text-white px-1 py-1 rounded-lg text-center">
+                        Get In Touch</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-sm">
+                            <i data-lucide="mail" class="w-4 h-4 mr-2 text-brand-light"></i>
+                            <a href="mailto:contact@robotics.com"
+                                class="text-black glow-link text-black">contact@robotics.com</a>
+                        </div>
+                        <div class="flex items-start text-sm">
+                            <i data-lucide="map-pin" class="w-4 h-4 mr-2 mt-0.5 text-brand-light flex-shrink-0"></i>
+                            <span class="text-black">123 Tech Drive, Suite 400, Silicon Valley, CA 94000</span>
+                        </div>
+                        <div class="flex items-center text-sm">
+                            <i data-lucide="phone" class="w-4 h-4 mr-2 text-brand-light"></i>
+                            <a href="tel:+15551234567" class="text-black glow-link">(555) 123-4567</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-brand-dark/50 my-6">
+
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center space-y-6 md:space-y-0">
+                <div class="text-sm text-black">
+                    &copy; 2025 Robotics, Inc. All rights reserved.
+                    <span class="block sm:inline-block text-gray-600">|</span>
+                    <a href="#" class="glow-link ml-1">Privacy Policy</a>
+                    <span class="hidden sm:inline-block text-gray-600">|</span>
+                    <a href="#" class="glow-link ml-1">Terms of Service</a>
+                </div>
+
+                <div class="flex space-x-4">
+                    <a href="#" class="text-black rounded-full p-2 bg-brand-dark glow-btn">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="text-black rounded-full p-2 bg-brand-dark glow-btn">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class=" text-black
+ rounded-full p-2 bg-brand-dark glow-btn">
+                        <i data-lucide="facebook" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="text-black rounded-full p-2 bg-brand-dark glow-btn">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        lucide.createIcons();
+
+    </script>
+
+
+
+    <!-- FOOTER -->
+    <!-- <footer class="bg-white border-t py-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-neutral-600 text-sm">© 2025 ShopifyX — Premium Minimal Living.</p>
+            <div class="flex gap-5 text-sm">
+                <a class="hover:text-purple-600 transition">Privacy</a>
+                <a class="hover:text-purple-600 transition">Terms</a>
+                <a class="hover:text-purple-600 transition">Support</a>
+            </div>
+        </div>
+    </footer> -->
+
+</body>
+
+</html>

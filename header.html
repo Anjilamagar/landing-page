@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics Header</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+        }
+
+        .glass-effect {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .menu-icon span {
+            width: 24px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .menu-icon:hover span {
+            background: #a855f7;
+        }
+
+        .search-input {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 600px;
+        }
+
+        .search-input:focus {
+            max-width: 100%;
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
+        }
+
+        @keyframes pulse-border {
+
+            0%,
+            100% {
+                border-color: rgba(168, 85, 247, 0.5);
+            }
+
+            50% {
+                border-color: rgba(168, 85, 247, 1);
+            }
+        }
+
+        .search-input:focus {
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+
+        .search-container {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Notification Banner */
+        .notification-banner {
+            background: linear-gradient(90deg, rgba(168, 85, 247, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%);
+            transition: all 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-text {
+            animation: slideIn 0.5s ease;
+        }
+
+        /* Icon animations */
+        .icon-wrapper {
+            transition: transform 0.3s ease;
+        }
+
+        .icon-wrapper:hover {
+            transform: scale(1.1);
+        }
+
+        /* Button hover effects */
+        .action-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+
+        /* Brand text animation */
+        .brand-text {
+            transition: all 0.3s ease;
+        }
+
+        /* Links fade animation */
+        .quick-links {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .quick-links.hidden-links {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+    </style>
+</head>
+
+<body class="text-white p-8">
+    <!-- Header -->
+    <header class="glass-effect border border-purple-500/30 rounded-3xl shadow-xl overflow-hidden">
+        <!-- Notification Banner -->
+        <div class="notification-banner border-b border-purple-500/20 px-6 py-1.5 text-center">
+            <p class="text-xs text-purple-200 notification-text" id="notificationText">
+                🎉 Special Offer: Get 20% off on all robotics kits! Use code: ROBOT20
+            </p>
+        </div>
+
+        <!-- Top Row -->
+        <div class="flex items-center justify-between px-6 py-3 border-b border-purple-500/20">
+            <!-- Menu Button -->
+            <button class="menu-icon p-2 hover:bg-purple-500/20 rounded-lg transition-all">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Logo and Brand -->
+            <!-- <div class="flex items-center gap-2">
+                <div
+                    class="w-5 h-5 rounded-full border-2 border-purple-400 flex items-center justify-center bg-purple-500/20 icon-wrapper overflow-hidden">
+                    <img src="img\logo\logo_high_png[1].png" alt="Robotics Logo"
+                        class="w-full h-full object-cover rounded-full">
+                </div>
+                <h1 class="text-2xl font-bold text-white brand-text">Robotics</h1>
+            </div> -->
+            <!-- <div class="flex items-center gap-3">
+                <div
+                    class="w-16 h-16 rounded-full border-4 border-purple-400 icon-wrapper overflow-hidden relative p-0.5">
+                    <img src="img\logo\logo_high_png[1].png" alt="Robotics Logo"
+                        class="absolute inset-0 w-full h-full object-cover rounded-full m-0.5">
+                </div>
+                <h1 class="text-4xl font-bold text-white brand-text">Robotics</h1>
+            </div> -->
+            <div class="flex items-center gap-3">
+                <div class="w-16 h-16 rounded-full border-4 border-purple-400 icon-wrapper overflow-hidden relative">
+                    <img src="img\logo\logo_high_png[1].png" alt="Robotics Logo"
+                        class="w-full h-full object-cover rounded-full">
+                </div>
+                <h1 class="text-4xl font-bold text-white brand-text">Robotics</h1>
+            </div>
+
+            <!-- Cart and Login Buttons -->
+            <div class="flex items-center gap-2">
+                <button
+                    class="px-4 py-1.5 border-2 border-purple-400 hover:bg-purple-500/20 rounded-full font-semibold transition-all text-purple-300 hover:text-white text-sm flex items-center gap-2 action-btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                        </path>
+                    </svg>
+                    cart
+                </button>
+                <button
+                    class="px-4 py-1.5 border-2 border-purple-400 hover:bg-purple-500/20 rounded-full font-semibold transition-all text-purple-300 hover:text-white text-sm flex items-center gap-2 action-btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    login
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Row - Search Bar -->
+        <div class="flex items-center justify-center px-6 py-3">
+            <!-- Search Bar Container (Full Width) -->
+            <div class="relative search-container" id="searchContainer">
+                <div
+                    class="absolute left-0 top-1/2 -translate-y-1/2 pl-4 text-purple-400 hover:text-purple-300 transition-all z-10 icon-wrapper pointer-events-none">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <input type="text" id="searchInput" placeholder="Search for products, kits, hardware..."
+                    class="w-full pl-12 pr-6 py-2.5 bg-purple-500/10 border-2 border-purple-400/50 rounded-full focus:outline-none focus:border-purple-400 text-white placeholder-purple-300/70 search-input text-center text-sm"
+                    onfocus="expandSearch()" onblur="contractSearch()">
+            </div>
+        </div>
+    </header>
+
+    <!-- Demo Content Below -->
+    <div class="mt-12 text-center">
+        <h2 class="text-3xl font-bold text-purple-300 mb-4">Robotics Store</h2>
+        <p class="text-purple-200/70">Header component with glass morphism effect</p>
+    </div>
+
+    <script>
+        // Notification rotation
+        const notifications = [
+            "🎉 Special Offer: Get 20% off on all robotics kits! Use code: ROBOT20",
+            "🚀 New Arrival: Advanced AI Robot Kit now available!",
+            "⚡ Flash Sale: 50% off on selected hardware - Limited time only!",
+            "🎁 Free Shipping on orders over $100!",
+            "🤖 Join our Robotics Workshop this weekend - Register now!"
+        ];
+
+        let currentNotification = 0;
+
+        function rotateNotification() {
+            const notificationText = document.getElementById('notificationText');
+            currentNotification = (currentNotification + 1) % notifications.length;
+
+            // Fade out
+            notificationText.style.opacity = '0';
+            notificationText.style.transform = 'translateY(-10px)';
+
+            setTimeout(() => {
+                notificationText.textContent = notifications[currentNotification];
+                // Fade in
+                notificationText.style.opacity = '1';
+                notificationText.style.transform = 'translateY(0)';
+            }, 300);
+        }
+
+        // Change notification every 5 seconds
+        setInterval(rotateNotification, 5000);
+
+        // Search functions
+        function expandSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchContainer = document.getElementById('searchContainer');
+
+            // Expand search bar and container to full width
+            searchContainer.classList.add('expanded');
+            searchInput.style.textAlign = 'left';
+        }
+
+        function contractSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchContainer = document.getElementById('searchContainer');
+
+            // Contract search bar and container back to default
+            searchContainer.classList.remove('expanded');
+            searchInput.style.textAlign = 'center';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics - Next-Gen Automation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        :root {
+            --brand-main: #7C5FDC;
+            --brand-dark: #6B46C1;
+            --brand-light: #A78BFA;
+            --purple-accent: #6C40C5;
+            --purple-light: #A886F7;
+            --text-light: #E0E0E0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #FFFFFF;
+            min-height: 100vh;
+        }
+
+        .glass-effect {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .menu-icon span {
+            width: 24px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .menu-icon:hover span {
+            background: #a855f7;
+        }
+
+        .search-input {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input:focus {
+            max-width: none;
+            width: 100%;
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
+        }
+
+        .search-container {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-container.expanded {
+            max-width: none;
+            width: 100%;
+        }
+
+        @keyframes pulse-border {
+
+            0%,
+            100% {
+                border-color: rgba(168, 85, 247, 0.5);
+            }
+
+            50% {
+                border-color: rgba(168, 85, 247, 1);
+            }
+        }
+
+        .search-input:focus {
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+
+        .notification-banner {
+            background: linear-gradient(90deg, rgba(168, 85, 247, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%);
+            transition: all 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-text {
+            animation: slideIn 0.5s ease;
+        }
+
+        .icon-wrapper {
+            transition: transform 0.3s ease;
+        }
+
+        .icon-wrapper:hover {
+            transform: scale(1.1);
+        }
+
+        .action-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+
+        /* Hero section */
+        .hero-fullscreen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-background-placeholder {
+            background-image: radial-gradient(circle at 10% 10%, rgba(108, 64, 197, 0.2), transparent 50%),
+                radial-gradient(circle at 90% 90%, rgba(168, 134, 247, 0.1), transparent 50%);
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite alternate;
+        }
+
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        .hero-title {
+            opacity: 0;
+            animation: slideInUpFade 1s ease-out 0.5s forwards;
+        }
+
+        .hero-subtitle {
+            opacity: 0;
+            animation: slideInUpFade 1s ease-out 0.7s forwards;
+        }
+
+        .hero-button {
+            opacity: 0;
+            animation: slideInUpFade 1s ease-out 0.9s forwards;
+        }
+
+        @keyframes slideInUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Auto-scroll for popular products */
+        .popular-scroll-wrapper {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .popular-scroll-track {
+            display: flex;
+            animation: continuous-scroll 40s linear infinite;
+        }
+
+        .popular-scroll-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes continuous-scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .product-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Category panels */
+        .category-panel {
+            position: relative;
+            min-height: 500px;
+            min-width: 300px;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.3);
+        }
+
+        .category-bg-image {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            transition: opacity 0.4s ease;
+        }
+
+        .category-panel:hover .category-bg-image {
+            opacity: 0.5;
+        }
+
+        .category-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+            z-index: 1;
+        }
+
+        .category-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+        }
+
+        .category-title {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--purple-light);
+            text-shadow: 2px 2px 8px rgba(168, 85, 247, 0.6);
+            margin-bottom: 1rem;
+        }
+
+        .category-shop-btn {
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-shop-btn:hover {
+            transform: translateX(5px);
+            color: var(--purple-light);
+        }
+
+        /* Request button */
+        .request-box {
+            background: rgba(26, 26, 46, 0.6);
+            border: 3px solid rgba(168, 85, 247, 0.3);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .request-box:hover {
+            transform: scale(1.05);
+            border-color: rgba(168, 85, 247, 0.6);
+        }
+
+        /* Chatbot */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chatbot-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 2px solid rgba(168, 85, 247, 0.3);
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .chatbot-container:hover .chatbot-window {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chatbot-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(168, 85, 247, 0.5) transparent;
+        }
+
+        .chatbot-input-area {
+            padding: 15px;
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            display: flex;
+            gap: 10px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            background: rgba(168, 85, 247, 0.2);
+            margin-right: auto;
+        }
+
+        .user-message {
+            background: rgba(124, 58, 237, 0.3);
+            margin-left: auto;
+        }
+
+        /* Fade in animations */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.visible .fade-in-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Asymmetric grid */
+        .asymmetric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            grid-auto-rows: minmax(200px, auto);
+        }
+
+        @media (min-width: 768px) {
+            .asymmetric-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .asymmetric-card.large-card {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+
+            .asymmetric-card.medium-card {
+                grid-column: span 1;
+                grid-row: span 2;
+            }
+        }
+
+        .hamburger-menu-wrapper {
+            position: relative;
+        }
+
+        .hamburger-menu-dropdown {
+            position: absolute;
+            left: 0;
+            top: 100%;
+            width: 250px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(168, 85, 247, 0.3);
+            border-radius: 0 0 15px 15px;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 50;
+            margin-top: 2px;
+        }
+
+        .hamburger-menu-wrapper:hover .hamburger-menu-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .menu-item-placeholder {
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(168, 85, 247, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid rgba(168, 85, 247, 0.5);
+        }
+    </style>
+</head>
+
+<body class="text-white">
+    <!-- Header -->
+    <header class="glass-effect border-b border-purple-500/30 sticky top-0 z-40">
+        <!-- Notification Banner -->
+        <div class="notification-banner border-b border-purple-500/20 px-4 md:px-8 py-1 text-center">
+            <p class="text-xs text-purple-200 notification-text" id="notificationText">
+                🎉 Special Offer: Get 20% off on all robotics kits! Use code: ROBOT20
+            </p>
+        </div>
+
+        <!-- Top Row -->
+        <div class="flex items-center justify-between px-4 md:px-8 py-2 border-b border-purple-500/20">
+            <!-- Menu Button with Dropdown -->
+            <div class="hamburger-menu-wrapper">
+                <button class="menu-icon p-1.5 hover:bg-purple-500/20 rounded-lg transition-all">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="hamburger-menu-dropdown">
+                    <h3 class="text-xl font-bold mb-4" style="color: var(--purple-light);">Menu</h3>
+                    <div class="menu-item-placeholder">
+                        <p class="text-sm text-gray-300">All Products</p>
+                    </div>
+                    <div class="menu-item-placeholder">
+                        <p class="text-sm text-gray-300">Kits</p>
+                    </div>
+                    <div class="menu-item-placeholder">
+                        <p class="text-sm text-gray-300">Apparel</p>
+                    </div>
+                    <div class="menu-item-placeholder">
+                        <p class="text-sm text-gray-300">IT & Gear</p>
+                    </div>
+                    <div class="menu-item-placeholder">
+                        <p class="text-sm text-gray-300">Support</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logo and Brand -->
+            <div class="flex items-center gap-3">
+                <div class="w-16 h-16 rounded-full border-4 border-purple-400 icon-wrapper overflow-hidden relative">
+                    <img src="img\logo\logo_high_png[1].png" alt="Robotics Logo"
+                        class="w-full h-full object-cover rounded-full border-4 border-purple-400">
+                </div>
+                <h1 class="text-4xl font-bold text-white">Robotics</h1>
+            </div>
+
+            <!-- Cart and Login Buttons -->
+            <div class="flex items-center gap-2">
+                <button
+                    class="px-4 py-1.5 border-2 border-purple-400 hover:bg-purple-500/20 rounded-full font-semibold transition-all text-purple-300 hover:text-white text-sm flex items-center gap-2 action-btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                        </path>
+                    </svg>
+                    cart
+                </button>
+                <button
+                    class="px-4 py-1.5 border-2 border-purple-400 hover:bg-purple-500/20 rounded-full font-semibold transition-all text-purple-300 hover:text-white text-sm flex items-center gap-2 action-btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    login
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Bar Row -->
+        <div class="flex items-center justify-center px-4 md:px-8 py-2">
+            <div class="relative search-container w-full" id="searchContainer">
+                <div
+                    class="absolute left-0 top-1/2 -translate-y-1/2 pl-4 text-purple-400 z-10 icon-wrapper pointer-events-none">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <input type="text" id="searchInput" placeholder="Search for products, kits, hardware..."
+                    class="w-full pl-12 pr-6 py-2.5 bg-purple-500/10 border-2 border-purple-400/50 rounded-full focus:outline-none focus:border-purple-400 text-white placeholder-purple-300/70 search-input text-center text-sm"
+                    onfocus="expandSearch()" onblur="contractSearch()">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-fullscreen hero-background-placeholder relative overflow-hidden">
+            <div class="relative z-10 px-4 md:px-12 max-w-7xl mx-auto w-full">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <!-- Text Content -->
+                    <div class="max-w-3xl">
+                        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 hero-title">
+                            Design the Future—<br>
+                            <span
+                                style="background: linear-gradient(135deg, #ffffff 0%, #A78BFA 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                                We Supply the Rest.
+                            </span>
+                        </h1>
+                        <p class="text-lg md:text-2xl mb-8 hero-subtitle text-gray-300">
+                            More Than Components. A Creator's Ecosystem.
+                        </p>
+                        <button
+                            class="px-8 py-4 text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition duration-300 hero-button"
+                            style="background-color: var(--purple-accent); color: white;">
+                            Explore Products
+                        </button>
+                    </div>
+
+                    <!-- Image Space -->
+                    <div class="hero-image-container hidden lg:flex items-center justify-center">
+                        <div
+                            class="w-full max-w-lg h-96 rounded-2xl border-4 border-purple-500/30 bg-purple-900/10 backdrop-blur-sm flex items-center justify-center overflow-hidden animate-float">
+                            <!-- Replace src with your hero image -->
+                            <img src="img\picture\banner1.jpg" alt="Hero Robot" class="w-full h-full object-cover">
+                            <!-- Or use this placeholder text if no image -->
+                            <!-- <div class="text-center p-8">
+                                <i class="fas fa-robot text-9xl text-purple-400 mb-4"></i>
+                                <p class="text-xl text-purple-300">Your Hero Image Here</p>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Section -->
+        <section class="max-w-7xl mx-auto px-4 md:px-8 py-16 fade-in-section">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12 fade-in-item">
+                <span
+                    style="background: linear-gradient(135deg, var(--purple-light) 0%, var(--purple-accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Shop by Category
+                </span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- KITS -->
+                <div class="category-panel fade-in-item">
+                    <div class="category-bg-image" style="background-color: rgba(108, 64, 197, 0.2);">
+                        <div class="w-full h-full flex items-center justify-center">
+                            <i class="fas fa-box text-9xl opacity-30" style="color: var(--purple-light);"></i>
+                        </div>
+                    </div>
+                    <div class="category-overlay"></div>
+                    <div class="category-content">
+                        <h3 class="category-title">KITS</h3>
+                        <a href="#" class="category-shop-btn">SHOP NOW →</a>
+                    </div>
+                </div>
+
+                <!-- APPAREL -->
+                <div class="category-panel fade-in-item">
+                    <div class="category-bg-image" style="background-color: rgba(168, 134, 247, 0.2);">
+                        <div class="w-full h-full flex items-center justify-center">
+                            <i class="fas fa-tshirt text-9xl opacity-30" style="color: var(--purple-light);"></i>
+                        </div>
+                    </div>
+                    <div class="category-overlay"></div>
+                    <div class="category-content">
+                        <h3 class="category-title">APPAREL</h3>
+                        <a href="#" class="category-shop-btn">SHOP NOW →</a>
+                    </div>
+                </div>
+
+                <!-- IT & GEARS -->
+                <div class="category-panel fade-in-item">
+                    <div class="category-bg-image" style="background-color: rgba(108, 64, 197, 0.2);">
+                        <div class="w-full h-full flex items-center justify-center">
+                            <i class="fas fa-laptop text-9xl opacity-30" style="color: var(--purple-light);"></i>
+                        </div>
+                    </div>
+                    <div class="category-overlay"></div>
+                    <div class="category-content">
+                        <h3 class="category-title">IT & GEARS</h3>
+                        <a href="#" class="category-shop-btn">SHOP NOW →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Products -->
+        <section class="max-w-7xl mx-auto px-4 md:px-8 py-16 fade-in-section">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12 fade-in-item">
+                <span
+                    style="background: linear-gradient(135deg, var(--purple-light) 0%, var(--purple-accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Popular Products
+                </span>
+            </h2>
+            <div class="popular-scroll-wrapper">
+                <div class="popular-scroll-track">
+                    <div class="flex gap-6">
+                        <div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                            style="background-color: rgba(108, 64, 197, 0.05);">
+                            <div
+                                class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                                <i class="fas fa-robot text-5xl" style="color: var(--purple-light);"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg" style="color: var(--purple-light);">AI Robot Kit Pro
+                                </h3>
+                                <p class="text-sm mt-2" style="color: var(--text-light);">NPR 7,499</p>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                            style="background-color: rgba(108, 64, 197, 0.05);">
+                            <div
+                                class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                                <i class="fas fa-camera text-5xl" style="color: var(--purple-light);"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Vision Camera</h3>
+                                <p class="text-sm mt-2" style="color: var(--text-light);">NPR 16,249</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="flex gap-6 ml-6">
+                        <div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                            style="background-color: rgba(108, 64, 197, 0.05);">
+                            <div
+                                class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                                <i class="fas fa-robot text-5xl" style="color: var(--purple-light);"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg" style="color: var(--purple-light);">AI Robot Kit Pro
+                                </h3>
+                                <p class="text-sm mt-2" style="color: var(--text-light);">NPR 37,499</p>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                            style="background-color: rgba(108, 64, 197, 0.05);">
+                            <div
+                                class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                                <i class="fas fa-microchip text-5xl" style="color: var(--purple-light);"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Advanced
+                                    Controller</h3>
+                                <p class="text-sm mt-2" style="color: var(--text-light);">NPR 18,749</p>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                            style="background-color: rgba(108, 64, 197, 0.05);">
+                            <div
+                                class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                                <i class="fas fa-cog text-5xl" style="color: var(--purple-light);"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Motor Set Premium
+                                </h3>
+                                <p class="text-sm mt-2" style="color: var(--text-light);">NPR 11,249</p>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                            style="background-color: rgba(108, 64, 197, 0.05);">
+                            <div
+                                class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                                <i class="fas fa-battery-full text-5xl" style="color: var(--purple-light);"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Power Pack XL</h3>
+                                <p class="text-sm mt-2" style="color: var(--text-light);">NPR 9,999</p>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                            style="background-color: rgba(108, 64, 197, 0.05);">
+                            <div
+                                class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                                <i class="fas fa-wifi text-5xl" style="color: var(--purple-light);"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Wireless Module
+                                </h3>
+                                <p class="text-sm mt-2" style="color: var(--text-light);">NPR 7,499</p>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                            style="background-color: rgba(108, 64, 197, 0.05);">
+                            <div
+                                class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                                <i class="fas fa-camera text-5xl" style="color: var(--purple-light);"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Vision Camera</h3>
+                                <p class="text-sm mt-2" style="color: var(--text-light);">NPR 16,249</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommended Section -->
+        <section class="max-w-7xl mx-auto px-4 md:px-8 py-16 fade-in-section">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12 fade-in-item">
+                <span
+                    style="background: linear-gradient(135deg, var(--purple-light) 0%, var(--purple-accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Recommended for You
+                </span>
+            </h2>
+            <div class="asymmetric-grid">
+                <!-- Large Card -->
+                <div class="asymmetric-card large-card fade-in-item rounded-2xl border border-gray-700 overflow-hidden product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div
+                        class="h-64 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                        <i class="fas fa-robot text-7xl" style="color: var(--purple-light);"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-2xl mb-2" style="color: var(--purple-light);">AI Robot Kit Pro</h3>
+                        <p class="text-base mb-3" style="color: var(--text-light);">Advanced AI-powered robotics kit</p>
+                        <p class="text-xl font-bold" style="color: var(--purple-light);">NPR 37,499</p>
+                    </div>
+                </div>
+
+                <!-- Medium Card -->
+                <div class="asymmetric-card medium-card fade-in-item rounded-2xl border border-gray-700 overflow-hidden product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div
+                        class="h-48 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                        <i class="fas fa-microchip text-6xl" style="color: var(--purple-light);"></i>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-semibold text-xl mb-2" style="color: var(--purple-light);">Advanced Controller
+                        </h3>
+                        <p class="text-sm mb-2" style="color: var(--text-light);">High-performance control</p>
+                        <p class="text-lg font-bold" style="color: var(--purple-light);">NPR 18,749</p>
+                    </div>
+                </div>
+
+                <!-- Small Cards -->
+                <div class="asymmetric-card small-card fade-in-item rounded-2xl border border-gray-700 overflow-hidden product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div
+                        class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                        <i class="fas fa-cog text-5xl" style="color: var(--purple-light);"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Motor Set</h3>
+                        <p class="text-base font-bold mt-2" style="color: var(--purple-light);">NPR 11,249</p>
+                    </div>
+                </div>
+
+                <div class="asymmetric-card small-card fade-in-item rounded-2xl border border-gray-700 overflow-hidden product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div
+                        class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                        <i class="fas fa-battery-full text-5xl" style="color: var(--purple-light);"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Power Pack</h3>
+                        <p class="text-base font-bold mt-2" style="color: var(--purple-light);">NPR 9,999</p>
+                    </div>
+                </div>
+
+                <!-- Medium Card 2 -->
+                <div class="asymmetric-card medium-card fade-in-item rounded-2xl border border-gray-700 overflow-hidden product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div
+                        class="h-48 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+                        <i class="fas fa-sensor text-6xl" style="color: var(--purple-light);"></i>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-semibold text-xl mb-2" style="color: var(--purple-light);">Sensor Array</h3>
+                        <p class="text-sm mb-2" style="color: var(--text-light);">Multi-sensor kit</p>
+                        <p class="text-lg font-bold" style="color: var(--purple-light);">NPR 24,999</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Custom Request Button -->
+        <section class="max-w-7xl mx-auto px-4 md:px-8 py-12 fade-in-section flex justify-end">
+            <div class="request-box p-8 inline-block cursor-pointer fade-in-item">
+                <p class="text-2xl font-bold mb-2" style="color: var(--purple-light);">
+                    Can't Find What You Need?
+                </p>
+                <p class="text-xl font-semibold" style="color: var(--text-light);">
+                    Request Here →
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-effect border-t border-purple-500/30 mt-20">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Brand -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full border-2 border-purple-400 overflow-hidden">
+                            <img src="https://scontent.fktm8-1.fna.fbcdn.net/v/t39.30808-6/469108224_122153383446387986_1110876923195218333_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=5zdRGmFd9m8Q7kNvgHoLRmC&_nc_zt=23&_nc_ht=scontent.fktm8-1.fna&_nc_gid=AiYNc3Xg_98IDfVKbwZ8YhB&oh=00_AYB9zLh5wCPOZD5dThFDDhSu7FKFkjglxjXg48m6_sGhxw&oe=673F9C36"
+                                alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xl font-bold">Robotics</span>
+                    </div>
+                    <p class="text-sm text-gray-400">
+                        Elevating digital experiences with intuitive design and powerful technology.
+                    </p>
+                </div>
+
+                <!-- Company -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4" style="color: var(--purple-light);">Company</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-purple-400 transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Careers</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Our Team</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Press</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4" style="color: var(--purple-light);">Resources</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-purple-400 transition">Documentation</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Support</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">FAQ</a></li>
+                        <li><a href="#" class="hover:text-purple-400 transition">Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4" style="color: var(--purple-light);">Contact</h3>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <p>contact@robotics.com</p>
+                        <p>(555) 123-4567</p>
+                        <p>Kathmandu, Nepal</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-purple-500/20 my-6">
+
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-gray-400 mb-4 md:mb-0">
+                    © 2025 Robotics. All rights reserved.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-purple-600/20 hover:bg-purple-600/40 flex items-center justify-center transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-purple-600/20 hover:bg-purple-600/40 flex items-center justify-center transition">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-purple-600/20 hover:bg-purple-600/40 flex items-center justify-center transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-purple-600/20 hover:bg-purple-600/40 flex items-center justify-center transition">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container">
+        <div class="chatbot-window">
+            <div class="chatbot-header">
+                <div>
+                    <h3 class="font-bold text-purple-300">Robotics Assistant</h3>
+                    <p class="text-xs text-purple-400">Online now</p>
+                </div>
+            </div>
+            <div class="chatbot-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Hi! 👋 I'm your Robotics Assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" id="chatInput" placeholder="Type your message..."
+                    class="flex-1 px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg focus:outline-none focus:border-purple-500 text-white text-sm">
+                <button onclick="sendChatMessage()"
+                    class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold transition-all text-sm">
+                    Send
+                </button>
+            </div>
+        </div>
+        <div class="chatbot-button">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z"
+                    fill="white" />
+                <circle cx="8" cy="10" r="1.5" fill="white" />
+                <circle cx="12" cy="10" r="1.5" fill="white" />
+                <circle cx="16" cy="10" r="1.5" fill="white" />
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        // Notification rotation
+        const notifications = [
+            "🎉 Special Offer: Get 20% off on all robotics kits! Use code: ROBOT20",
+            "🚀 New Arrival: Advanced AI Robot Kit now available!",
+            "⚡ Flash Sale: 50% off on selected hardware - Limited time only!",
+            "🎁 Free Shipping on orders over NPR 12,500!",
+            "🤖 Join our Robotics Workshop this weekend - Register now!"
+        ];
+
+        let currentNotification = 0;
+
+        function rotateNotification() {
+            const notificationText = document.getElementById('notificationText');
+            currentNotification = (currentNotification + 1) % notifications.length;
+
+            notificationText.style.opacity = '0';
+            notificationText.style.transform = 'translateY(-10px)';
+
+            setTimeout(() => {
+                notificationText.textContent = notifications[currentNotification];
+                notificationText.style.opacity = '1';
+                notificationText.style.transform = 'translateY(0)';
+            }, 300);
+        }
+
+        setInterval(rotateNotification, 5000);
+
+        // Search functions
+        function expandSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchContainer = document.getElementById('searchContainer');
+            searchContainer.classList.add('expanded');
+            searchInput.style.textAlign = 'left';
+        }
+
+        function contractSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchContainer = document.getElementById('searchContainer');
+            if (!searchInput.value) {
+                searchContainer.classList.remove('expanded');
+                searchInput.style.textAlign = 'center';
+            }
+        }
+
+        // Chatbot
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (message === '') return;
+
+            const messagesContainer = document.getElementById('chatMessages');
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user-message';
+            userMsg.textContent = message;
+            messagesContainer.appendChild(userMsg);
+
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'message bot-message';
+                botMsg.textContent = 'Thanks for your message! How can I assist you with our robotics products?';
+                messagesContainer.appendChild(botMsg);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) {
+                chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') sendChatMessage();
+                });
+            }
+
+            // Fade-in animations
+            const observerOptions = {
+                threshold: 0.15,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const fadeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        fadeObserver.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-section').forEach(el => {
+                fadeObserver.observe(el);
+            });
+        });
+    </script>
+</body>
+
+</html>R 37,499</p>
+</div>
+</div>
+<div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+    style="background-color: rgba(108, 64, 197, 0.05);">
+    <div
+        class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+        <i class="fas fa-microchip text-5xl" style="color: var(--purple-light);"></i>
+    </div>
+    <div class="p-4">
+        <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Advanced Controller</h3>
+        <p class="text-sm mt-2" style="color: var(--text-light);">NPR 18,749</p>
+    </div>
+</div>
+<div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+    style="background-color: rgba(108, 64, 197, 0.05);">
+    <div
+        class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+        <i class="fas fa-cog text-5xl" style="color: var(--purple-light);"></i>
+    </div>
+    <div class="p-4">
+        <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Motor Set Premium</h3>
+        <p class="text-sm mt-2" style="color: var(--text-light);">NPR 11,249</p>
+    </div>
+</div>
+<div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+    style="background-color: rgba(108, 64, 197, 0.05);">
+    <div
+        class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+        <i class="fas fa-battery-full text-5xl" style="color: var(--purple-light);"></i>
+    </div>
+    <div class="p-4">
+        <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Power Pack XL</h3>
+        <p class="text-sm mt-2" style="color: var(--text-light);">NPR 9,999</p>
+    </div>
+</div>
+<div class="flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+    style="background-color: rgba(108, 64, 197, 0.05);">
+    <div
+        class="h-40 bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center animate-float">
+        <i class="fas fa-wifi text-5xl" style="color: var(--purple-light);"></i>
+    </div>
+    <div class="p-4">
+        <h3 class="font-semibold text-lg" style="color: var(--purple-light);">Wireless Module</h3>
+        <p class="text-sm mt-2" style="color: var(--text-light);">NP

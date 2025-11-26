@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics - Next-Gen Automation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-main': 'var(--brand-main)',
+                        'brand-dark': 'var(--brand-dark)',
+                        'brand-light': 'var(--brand-light)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Variables */
+        :root {
+            --brand-main: #7C5FDC;
+            --brand-dark: #6B46C1;
+            --brand-light: #A78BFA;
+            --header-dark: #1a1a2e;
+            --bg-dark: #0A0A0E;
+            --purple-accent: #6C40C5;
+            --purple-light: #A886F7;
+            --text-light: #E0E0E0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #FFFFFF;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .glass-effect {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .menu-icon span {
+            width: 24px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .menu-icon:hover span {
+            background: #a855f7;
+        }
+
+        .search-input {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 600px;
+        }
+
+        .search-input:focus {
+            max-width: 100%;
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
+        }
+
+        @keyframes pulse-border {
+
+            0%,
+            100% {
+                border-color: rgba(168, 85, 247, 0.5);
+            }
+
+            50% {
+                border-color: rgba(168, 85, 247, 1);
+            }
+        }
+
+        .search-input:focus {
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+
+        .notification-banner {
+            background: linear-gradient(90deg, rgba(168, 85, 247, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%);
+            transition: all 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-text {
+            animation: slideIn 0.5s ease;
+        }
+
+        .icon-wrapper {
+            transition: transform 0.3s ease;
+        }
+
+        .icon-wrapper:hover {
+            transform: scale(1.1);
+        }
+
+        .action-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+
+        /* Footer Styles */
+        .glow-link {
+            transition: all 0.3s ease;
+        }
+
+        .glow-link:hover {
+            color: var(--brand-light) !important;
+            text-shadow: 0 0 5px rgba(167, 139, 250, 0.8);
+            transform: translateY(-1px);
+        }
+
+        .glow-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glow-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(167, 139, 250, 0.5), 0 0 8px rgba(167, 139, 250, 0.3);
+        }
+
+        /* Floating Dock Styles */
+        .dock-glass {
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease-out;
+        }
+
+        .interactive-dock {
+            transform: translate(-50%, calc(100% - 30px));
+            box-shadow: 0 -8px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .interactive-dock.is-open {
+            transform: translate(-50%, 0);
+            box-shadow: 0 0 10px rgba(167, 139, 250, 0.4), 0 -4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .dock-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .dock-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            color: var(--brand-light);
+            text-shadow: 0 0 5px rgba(167, 139, 250, 0.5);
+        }
+
+        .dock-icon-wrapper {
+            transition: transform 0.3s ease;
+        }
+
+        .dock-item:hover .dock-icon-wrapper {
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.7);
+        }
+
+        /* Hero Background Animation */
+        .hero-background-placeholder {
+            background-image: radial-gradient(circle at 10% 10%, rgba(108, 64, 197, 0.2), transparent 50%),
+                radial-gradient(circle at 90% 90%, rgba(168, 134, 247, 0.1), transparent 50%);
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite alternate;
+        }
+
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        /* Card Scrolling Styles */
+        .scroll-card-container {
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--brand-light) transparent;
+        }
+
+        .scroll-card-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .scroll-card-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .scroll-card-container::-webkit-scrollbar-thumb {
+            background: var(--brand-light);
+            border-radius: 4px;
+        }
+
+        .scroll-card-item {
+            display: inline-block;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .scroll-card-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Auto-scroll animation */
+        @keyframes auto-scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .auto-scroll {
+            animation: auto-scroll 30s linear infinite;
+        }
+
+        .auto-scroll:hover {
+            animation-play-state: paused;
+        }
+
+        /* Product Card Enhancements */
+        .product-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
+        }
+    </style>
+</head>
+
+<body class="text-white">
+    <!-- Header Component -->
+    <header class="glass-effect border border-purple-500/30 rounded-3xl shadow-xl overflow-hidden m-4 md:m-8">
+        <!-- Notification Banner -->
+        <div class="notification-banner border-b border-purple-500/20 px-6 py-1.5 text-center">
+            <p class="text-xs text-purple-200 notification-text" id="notificationText">
+                🎉 Special Offer: Get 20% off on all robotics kits! Use code: ROBOT20
+            </p>
+        </div>
+
+        <!-- Top Row -->
+        <div class="flex items-center justify-between px-6 py-3 border-b border-purple-500/20">
+            <!-- Menu Button -->
+            <button class="menu-icon p-2 hover:bg-purple-500/20 rounded-lg transition-all">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Logo and Brand -->
+            <div class="flex items-center gap-2">
+                <div
+                    class="w-5 h-5 rounded-full border-2 border-purple-400 flex items-center justify-center bg-purple-500/20 icon-wrapper overflow-hidden">
+                    <img src="img\logo\logo_high_png[1].png" alt="Robotics Logo"
+                        class="w-full h-full object-cover rounded-full">
+                </div>
+                <h1 class="text-2xl font-bold text-white brand-text">Robotics</h1>
+            </div>
+
+            <!-- Cart and Login Buttons -->
+            <div class="flex items-center gap-2">
+                <button
+                    class="px-4 py-1.5 border-2 border-purple-400 hover:bg-purple-500/20 rounded-full font-semibold transition-all text-purple-300 hover:text-white text-sm flex items-center gap-2 action-btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                        </path>
+                    </svg>
+                    cart
+                </button>
+                <button
+                    class="px-4 py-1.5 border-2 border-purple-400 hover:bg-purple-500/20 rounded-full font-semibold transition-all text-purple-300 hover:text-white text-sm flex items-center gap-2 action-btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    login
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Row - Search Bar -->
+        <div class="flex items-center justify-center px-6 py-3">
+            <div class="relative search-container w-full max-w-2xl" id="searchContainer">
+                <div
+                    class="absolute left-0 top-1/2 -translate-y-1/2 pl-4 text-purple-400 hover:text-purple-300 transition-all z-10 icon-wrapper pointer-events-none">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <input type="text" id="searchInput" placeholder="Search for products, kits, hardware..."
+                    class="w-full pl-12 pr-6 py-2.5 bg-purple-500/10 border-2 border-purple-400/50 rounded-full focus:outline-none focus:border-purple-400 text-white placeholder-purple-300/70 search-input text-center text-sm"
+                    onfocus="expandSearch()" onblur="contractSearch()">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto p-4 md:p-8 pb-32">
+        <!-- Hero Section -->
+        <section
+            class="hero-background-placeholder rounded-xl shadow-2xl p-10 md:p-20 mb-12 h-[60vh] flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20 bg-cover bg-center"></div>
+            <div class="relative z-10 text-center">
+                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight"
+                    style="color: var(--purple-light);">
+                    Explore <span style="color: var(--purple-accent);">Next-Gen</span> Robotics
+                </h1>
+                <p class="mt-4 text-xl" style="color: var(--text-light);">Powering the backbone of future automation.
+                </p>
+                <button
+                    class="mt-8 px-8 py-3 text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition duration-300"
+                    style="background-color: var(--purple-accent); color: white;">
+                    Explore Products
+                </button>
+            </div>
+        </section>
+
+        <!-- New Arrivals & Best Sellers -->
+        <section class="grid md:grid-cols-2 gap-8 mb-12">
+            <div class="p-6 rounded-xl border border-gray-700 h-64 flex flex-col justify-end product-card"
+                style="background-color: rgba(108, 64, 197, 0.1);">
+                <h2 class="text-3xl font-bold" style="color: var(--purple-light);">New Arrivals</h2>
+                <p class="text-sm mt-2" style="color: var(--text-light);">Cutting-edge tech, just landed.</p>
+            </div>
+            <div class="p-6 rounded-xl border border-gray-700 h-64 flex flex-col justify-end product-card"
+                style="background-color: rgba(168, 134, 247, 0.1);">
+                <h2 class="text-3xl font-bold" style="color: var(--purple-light);">Best Sells</h2>
+                <p class="text-sm mt-2" style="color: var(--text-light);">The most popular choices this season.</p>
+            </div>
+        </section>
+
+        <!-- Browse by Sub-category with Auto-Scroll -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6" style="color: var(--purple-accent);">Browse by Sub-category</h2>
+            <div class="flex space-x-6 overflow-x-auto pb-4 scroll-card-container" id="categoryScroll">
+                <div class="flex-shrink-0 w-48 h-36 rounded-xl p-4 border border-gray-700 cursor-pointer hover:shadow-lg transition duration-300 product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div class="w-full h-full bg-gray-800 rounded flex items-center justify-center">
+                        <span class="text-sm font-semibold" style="color: var(--purple-light);">Robotic Kits</span>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-48 h-36 rounded-xl p-4 border border-gray-700 cursor-pointer hover:shadow-lg transition duration-300 product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div class="w-full h-full bg-gray-800 rounded flex items-center justify-center">
+                        <span class="text-sm font-semibold" style="color: var(--purple-light);">Hardware</span>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-48 h-36 rounded-xl p-4 border border-gray-700 cursor-pointer hover:shadow-lg transition duration-300 product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div class="w-full h-full bg-gray-800 rounded flex items-center justify-center">
+                        <span class="text-sm font-semibold" style="color: var(--purple-light);">Apparel</span>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-48 h-36 rounded-xl p-4 border border-gray-700 cursor-pointer hover:shadow-lg transition duration-300 product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div class="w-full h-full bg-gray-800 rounded flex items-center justify-center">
+                        <span class="text-sm font-semibold" style="color: var(--purple-light);">IT & Gear</span>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-48 h-36 rounded-xl p-4 border border-gray-700 cursor-pointer hover:shadow-lg transition duration-300 product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div class="w-full h-full bg-gray-800 rounded flex items-center justify-center">
+                        <span class="text-sm font-semibold" style="color: var(--purple-light);">Accessories</span>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 w-48 h-36 rounded-xl p-4 border border-gray-700 cursor-pointer hover:shadow-lg transition duration-300 product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div class="w-full h-full bg-gray-800 rounded flex items-center justify-center">
+                        <span class="text-sm font-semibold" style="color: var(--purple-light);">Components</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-4 mt-4">
+                <button
+                    class="px-4 py-2 text-sm rounded-full border border-gray-700 hover:bg-gray-800 transition duration-300"
+                    style="color: var(--purple-light);">Hardware</button>
+                <button
+                    class="px-4 py-2 text-sm rounded-full border border-gray-700 hover:bg-gray-800 transition duration-300"
+                    style="color: var(--purple-light);">Clothing</button>
+            </div>
+        </section>
+
+        <!-- Popular Products with Auto-Scroll -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8" style="color: var(--purple-light);">Popular Products</h2>
+            <div class="flex space-x-4 overflow-x-auto pb-4 scroll-card-container" id="popularScroll">
+                <div class="scroll-card-item flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div
+                        class="h-40 w-full bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center">
+                        <i class="fas fa-robot text-4xl" style="color: var(--purple-light);"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold" style="color: var(--purple-light);">AI Robot Kit Pro</h3>
+                        <p class="text-sm mt-1" style="color: var(--text-light);">$299.99</p>
+                    </div>
+                </div>
+                <div class="scroll-card-item flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div
+                        class="h-40 w-full bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center">
+                        <i class="fas fa-microchip text-4xl" style="color: var(--purple-light);"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold" style="color: var(--purple-light);">Advanced Controller</h3>
+                        <p class="text-sm mt-1" style="color: var(--text-light);">$149.99</p>
+                    </div>
+                </div>
+                <div class="scroll-card-item flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div
+                        class="h-40 w-full bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center">
+                        <i class="fas fa-cog text-4xl" style="color: var(--purple-light);"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold" style="color: var(--purple-light);">Motor Set Premium</h3>
+                        <p class="text-sm mt-1" style="color: var(--text-light);">$89.99</p>
+                    </div>
+                </div>
+                <div class="scroll-card-item flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div
+                        class="h-40 w-full bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center">
+                        <i class="fas fa-sensor text-4xl" style="color: var(--purple-light);"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold" style="color: var(--purple-light);">Sensor Array</h3>
+                        <p class="text-sm mt-1" style="color: var(--text-light);">$199.99</p>
+                    </div>
+                </div>
+                <div class="scroll-card-item flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div
+                        class="h-40 w-full bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center">
+                        <i class="fas fa-battery-full text-4xl" style="color: var(--purple-light);"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold" style="color: var(--purple-light);">Power Pack XL</h3>
+                        <p class="text-sm mt-1" style="color: var(--text-light);">$79.99</p>
+                    </div>
+                </div>
+                <div class="scroll-card-item flex-shrink-0 w-64 rounded-xl border border-gray-700 overflow-hidden product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);">
+                    <div
+                        class="h-40 w-full bg-gradient-to-br from-purple-600/20 to-purple-800/20 flex items-center justify-center">
+                        <i class="fas fa-wifi text-4xl" style="color: var(--purple-light);"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold" style="color: var(--purple-light);">Wireless Module</h3>
+                        <p class="text-sm mt-1" style="color: var(--text-light);">$59.99</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Section -->
+        <section class="mb-12">
+            <h2 class="text-4xl font-extrabold text-center mb-10 tracking-widest" style="color: var(--purple-accent);">
+                ROBOTICS</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="col-span-1 md:col-span-2 p-6 rounded-xl border border-gray-700 h-64 product-card"
+                    style="background-color: rgba(168, 134, 247, 0.05);">
+                    <div
+                        class="w-full h-full bg-gradient-to-br from-purple-600/10 to-purple-800/10 rounded flex items-center justify-center">
+                        <span class="text-sm font-semibold" style="color: var(--purple-light);">Featured Product
+                            Block</span>
+                    </div>
+                </div>
+                <div class="p-6 rounded-xl border border-gray-700 h-64 flex flex-col justify-between product-card"
+                    style="background-color: rgba(108, 64, 197, 0.1);">
+                    <div>
+                        <h3 class="text-xl font-bold" style="color: var(--purple-light);">Hardware and Tools</h3>
+                        <p class="text-sm mt-1" style="color: var(--text-light);">Essential components.</p>
+                    </div>
+                    <button
+                        class="w-full py-2 font-semibold rounded-lg mt-4 transition duration-300 border border-transparent hover:border-white"
+                        style="background-color: var(--purple-accent); color: white;">SHOP NOW</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+                <div class="col-span-1 p-6 rounded-xl border border-gray-700 h-64 flex flex-col justify-between product-card"
+                    style="background-color: rgba(168, 134, 247, 0.1);">
+                    <div>
+                        <h3 class="text-xl font-bold" style="color: var(--purple-light);">Attire</h3>
+                        <p class="text-sm mt-1" style="color: var(--text-light);">Wear the future.</p>
+                    </div>
+                    <button
+                        class="w-full py-2 font-semibold rounded-lg mt-4 transition duration-300 border border-transparent hover:border-white"
+                        style="background-color: var(--purple-accent); color: white;">SHOP NOW</button>
+                </div>
+                <div class="col-span-1 h-64 rounded-xl border border-gray-700 product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);"></div>
+                <div class="col-span-1 h-64 rounded-xl border border-gray-700 product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);"></div>
+                <div class="col-span-1 h-64 rounded-xl border border-gray-700 product-card"
+                    style="background-color: rgba(108, 64, 197, 0.05);"></div>
+            </div>
+        </section>
+
+        <!-- Chart/Description Section -->
+        <section class="mb-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="col-span-1 md:col-span-2 p-6 rounded-xl border border-gray-700 h-64 product-card"
+                style="background-color: rgba(168, 134, 247, 0.05);">
+                <h3 class="text-xl font-bold mb-2" style="color: var(--purple-light);">Chart's View / Description</h3>
+                <p class="text-sm" style="color: var(--text-light);">Detailed product description or data visualization
+                    goes here.</p>
+            </div>
+            <div class="col-span-1 p-6 rounded-xl border border-gray-700 h-64 product-card"
+                style="background-color: rgba(108, 64, 197, 0.05);">
+                <h3 class="text-xl font-bold mb-2" style="color: var(--purple-light);">Related Content</h3>
+                <div class="h-4/5 bg-gray-800 rounded"></div>
+            </div>
+        </section>
+
+        <!-- Trusted By Section -->
+        <section class="mb-12">
+            <h3 class="text-lg font-bold mb-4" style="color: var(--purple-accent);">Trusted By</h3>
+            <div class="flex space-x-6 overflow-x-auto scroll-card-container">
+                <div
+                    class="flex-shrink-0 w-20 h-20 rounded-full border border-gray-700 flex items-center justify-center bg-gray-800">
+                    <i class="fas fa-building text-2xl" style="color: var(--purple-light);"></i>
+                </div>
+                <div
+                    class="flex-shrink-0 w-20 h-20 rounded-full border border-gray-700 flex items-center justify-center bg-gray-800">
+                    <i class="fas fa-industry text-2xl" style="color: var(--purple-light);"></i>
+                </div>
+                <div
+                    class="flex-shrink-0 w-20 h-20 rounded-full border border-gray-700 flex items-center justify-center bg-gray-800">
+                    <i class="fas fa-university text-2xl" style="color: var(--purple-light);"></i>
+                </div>
+                <div
+                    class="flex-shrink-0 w-20 h-20 rounded-full border border-gray-700 flex items-center justify-center bg-gray-800">
+                    <i class="fas fa-flask text-2xl" style="color: var(--purple-light);"></i>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Component -->
+    <footer class="glass-effect border border-brand-light/30 rounded-3xl shadow-xl m-4 md:m-8 overflow-hidden">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-y-10 gap-x-8">
+                <!-- Branding -->
+                <div class="col-span-2 md:col-span-2 space-y-4 pr-8">
+                    <div class="flex items-center space-x-2">
+                        <div
+                            class="w-10 h-10 md:w-16 md:h-16 lg:w-20 lg:h-20 aspect-square rounded-full border-2 md:border-4 border-brand-light/70 flex items-center justify-center bg-brand-dark/20 overflow-hidden glow-link">
+                            <img src="img\logo\logo_high_png[1].png" alt="Robotics Logo"
+                                class="w-full h-full object-contain aspect-square rounded-full">
+                        </div>
+                        <span class="text-2xl font-extrabold tracking-tight glow-link">Robotics</span>
+                    </div>
+                    <p class="text-sm text-gray-400 max-w-xs">
+                        Elevating digital experiences with intuitive design and powerful technology.
+                    </p>
+                    <a href="#newsletter"
+                        class="inline-block px-4 py-2 text-sm font-semibold bg-brand-light hover:bg-brand-dark text-brand-dark rounded-lg transition duration-300 shadow-lg glow-btn">
+                        Join Our Newsletter
+                    </a>
+                </div>
+
+                <!-- Company Links -->
+                <div class="col-span-1">
+                    <h3 class="text-lg font-semibold mb-4 text-brand-light glow-link">Company</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-400 glow-link">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 glow-link">Careers (We're Hiring!)</a></li>
+                        <li><a href="#" class="text-gray-400 glow-link">Our Team</a></li>
+                        <li><a href="#" class="text-gray-400 glow-link">Press & Media</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources Links -->
+                <div class="col-span-1">
+                    <h3 class="text-lg font-semibold mb-4 text-brand-light glow-link">Resources</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="text-gray-400 glow-link">Developer Docs</a></li>
+                        <li><a href="#" class="text-gray-400 glow-link">Customer Support</a></li>
+                        <li><a href="#" class="text-gray-400 glow-link">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 glow-link">Product Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="col-span-2 md:col-span-2 space-y-4">
+                    <h3 class="text-lg font-semibold mb-4 text-brand-light glow-link">Get In Touch</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-sm">
+                            <i data-lucide="mail" class="w-4 h-4 mr-2 text-brand-light"></i>
+                            <a href="mailto:contact@

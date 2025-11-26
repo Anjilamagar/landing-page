@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics Header</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Configuration (REQUIRED for custom 'brand-' colors) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Define custom purple palette
+                        'brand-main': '#7C5FDC', // Main Purple
+                        'brand-dark': '#6B46C1', // Deep Purple
+                        'brand-light': '#A78BFA', // Light Accent
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Define custom colors using CSS variables (for CSS/JS accessibility) */
+        :root {
+            --brand-main: #7C5FDC;
+            --brand-light: #A78BFA;
+            --brand-dark: #6B46C1;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+        }
+
+        .glass-effect {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Menu Icon Styling */
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .menu-icon span {
+            width: 24px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .menu-icon:hover span {
+            background: var(--brand-light);
+            /* Using custom variable */
+        }
+
+        /* Search Input Styling */
+        .search-input {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 600px;
+        }
+
+        .search-input:focus {
+            max-width: 100%;
+            /* Using brand-light for focus ring */
+            box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.2);
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-border {
+
+            0%,
+            100% {
+                border-color: rgba(167, 139, 250, 0.5);
+                /* Using brand-light */
+            }
+
+            50% {
+                border-color: rgba(167, 139, 250, 1);
+            }
+        }
+
+        .search-container {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Notification Banner */
+        .notification-banner {
+            background: linear-gradient(90deg, rgba(167, 139, 250, 0.2) 0%, rgba(124, 95, 220, 0.2) 100%);
+            transition: all 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-text {
+            animation: slideIn 0.5s ease;
+        }
+
+        /* Icon animations */
+        .icon-wrapper {
+            transition: transform 0.3s ease;
+        }
+
+        .icon-wrapper:hover {
+            transform: scale(1.1);
+        }
+
+        /* Button hover effects */
+        .action-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
+            /* Using brand-light */
+        }
+
+        /* Brand text animation */
+        .brand-text {
+            /* Now handled mostly by Tailwind classes for the glow/shadow effect */
+            transition: all 0.3s ease;
+        }
+
+        /* Links fade animation */
+        .quick-links {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .quick-links.hidden-links {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+    </style>
+</head>
+
+<body class="text-white p-8">
+    <!-- Header -->
+    <header class="glass-effect border border-brand-light/30 rounded-3xl shadow-xl overflow-hidden">
+        <!-- Notification Banner -->
+        <div class="notification-banner border-b border-brand-light/20 px-6 py-1.5 text-center">
+            <p class="text-xs text-purple-200 notification-text" id="notificationText">
+                🎉 Special Offer: Get 20% off on all robotics kits! Use code: ROBOT20
+            </p>
+        </div>
+
+        <!-- Top Row -->
+        <div class="flex items-center justify-between px-6 py-4"> <!-- Increased vertical padding to 4 -->
+            <!-- Menu Button -->
+            <button class="menu-icon p-2 hover:bg-brand-dark/20 rounded-lg transition-all">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- MERGED LOGO AND BRAND SECTION (Huge and Attractive) -->
+            <!-- We center the logo in the middle column if space allows -->
+            <div class="flex-grow flex justify-center">
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <!-- Logo Icon (Huge, Glowing) -->
+                    <div
+                        class="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-4 border-brand-light flex items-center justify-center bg-brand-dark/30 overflow-hidden 
+                               transition-all duration-300 hover:scale-[1.05] shadow-lg hover:shadow-xl hover:shadow-brand-light/70">
+                        <img src="https://placehold.co/100x100/7C5FDC/FFFFFF?text=R" alt="Robotics Logo"
+                            class="w-full h-full object-cover rounded-full"
+                            onerror="this.onerror=null; this.src='https://placehold.co/100x100/7C5FDC/FFFFFF?text=R';">
+                    </div>
+                    <!-- Brand Text (Massive and Attractive) -->
+                    <h1 class="text-3xl sm:text-5xl font-extrabold text-brand-light tracking-tightest 
+                               drop-shadow-xl shadow-brand-light/70 brand-text hidden sm:block">
+                        Robotics
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Cart and Login Buttons -->
+            <div class="flex items-center gap-2">
+                <button
+                    class="px-3 py-1.5 border-2 border-brand-light/70 hover:bg-brand-dark/30 rounded-full font-semibold transition-all text-brand-light/90 hover:text-white text-sm flex items-center gap-1.5 action-btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                        </path>
+                    </svg>
+                    <span class="hidden sm:inline">cart</span>
+                </button>
+                <button
+                    class="px-3 py-1.5 border-2 border-brand-light/70 hover:bg-brand-dark/30 rounded-full font-semibold transition-all text-brand-light/90 hover:text-white text-sm flex items-center gap-1.5 action-btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <span class="hidden sm:inline">login</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Row - Search Bar -->
+        <div class="flex items-center justify-center px-6 py-3">
+            <!-- Search Bar Container (Full Width) -->
+            <div class="relative search-container w-full" id="searchContainer">
+                <div
+                    class="absolute left-0 top-1/2 -translate-y-1/2 pl-4 text-brand-light hover:text-brand-light/80 transition-all z-10 icon-wrapper pointer-events-none">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <input type="text" id="searchInput" placeholder="Search for products, kits, hardware..."
+                    class="w-full pl-12 pr-6 py-2.5 bg-brand-dark/10 border-2 border-brand-light/50 rounded-full focus:outline-none focus:border-brand-light text-white placeholder-brand-light/70 search-input text-sm"
+                    onfocus="expandSearch()" onblur="contractSearch()">
+            </div>
+        </div>
+
+        <!-- Quick Links (New addition for better navigation) -->
+        <div class="flex items-center justify-center px-6 py-2 bg-black/10">
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs font-medium text-gray-300">
+                <a href="#" class="quick-links hover:text-brand-light transition duration-200">Kits</a>
+                <a href="#" class="quick-links hover:text-brand-light transition duration-200">AI</a>
+                <a href="#" class="quick-links hover:text-brand-light transition duration-200">Hardware</a>
+                <a href="#" class="quick-links hover:text-brand-light transition duration-200">Software</a>
+                <a href="#" class="quick-links hover:text-brand-light transition duration-200">Education</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Demo Content Below -->
+    <div class="mt-12 text-center">
+        <h2 class="text-3xl font-bold text-brand-light mb-4">Robotics Store Header Complete</h2>
+        <p class="text-purple-200/70">The logo section is now dramatically enhanced and styled with glow and large text.
+        </p>
+    </div>
+
+    <script>
+        // Notification rotation
+        const notifications = [
+            "🎉 Special Offer: Get 20% off on all robotics kits! Use code: ROBOT20",
+            "🚀 New Arrival: Advanced AI Robot Kit now available!",
+            "⚡ Flash Sale: 50% off on selected hardware - Limited time only!",
+            "🎁 Free Shipping on orders over $100!",
+            "🤖 Join our Robotics Workshop this weekend - Register now!"
+        ];
+
+        let currentNotification = 0;
+
+        function rotateNotification() {
+            const notificationText = document.getElementById('notificationText');
+            currentNotification = (currentNotification + 1) % notifications.length;
+
+            // Use opacity and transition for smoother fade effect
+            notificationText.style.opacity = '0';
+            notificationText.style.transform = 'translateY(-10px)';
+
+            setTimeout(() => {
+                notificationText.textContent = notifications[currentNotification];
+                // Fade in
+                notificationText.style.opacity = '1';
+                notificationText.style.transform = 'translateY(0)';
+            }, 300);
+        }
+
+        // Change notification every 5 seconds
+        rotateNotification(); // Initial call
+        setInterval(rotateNotification, 5000);
+
+        // Search functions
+        function expandSearch() {
+            const searchInput = document.getElementById('searchInput');
+            // The search bar now fills the width, so we only adjust text alignment on focus/blur
+            searchInput.classList.remove('text-center');
+            searchInput.classList.add('text-left');
+        }
+
+        function contractSearch() {
+            const searchInput = document.getElementById('searchInput');
+            // Reset text alignment on blur
+            if (searchInput.value === '') {
+                searchInput.classList.remove('text-left');
+                searchInput.classList.add('text-center');
+            }
+        }
+    </script>
+</body>
+
+</html>

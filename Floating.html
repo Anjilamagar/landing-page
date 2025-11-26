@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Hidden Product Dock</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-main': 'var(--brand-main)',
+                        'brand-dark': 'var(--brand-dark)',
+                        'brand-light': 'var(--brand-light)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Define custom colors using CSS variables */
+        :root {
+            --brand-main: #7C5FDC;
+            /* Main Purple */
+            --brand-dark: #6B46C1;
+            /* Deep Purple */
+            --brand-light: #A78BFA;
+            /* Light Accent */
+            --header-dark: #1a1a2e;
+            /* Darkest color from header */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #FFFFFF;
+            min-height: 200vh;
+            /* Long body for fixed demonstration */
+            padding-bottom: 5rem;
+            /* Ensure space for the dock when open */
+        }
+
+        /* 1. Glass Effect for the Dock */
+        .dock-glass {
+            background: rgba(26, 26, 46, 0.7);
+            /* Slightly less transparent when closed */
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease-out;
+            /* Smooth transition for slide */
+        }
+
+        /* 2. Dock Default (Hidden) State: Pushes the dock off-screen, leaving 30px visible. */
+        .interactive-dock {
+            /* Pushes the element down by 100% of its height, minus the 30px handle */
+            transform: translate(-50%, calc(100% - 30px));
+
+            /* Initial shadow for the visible handle */
+            box-shadow: 0 -8px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 3. Dock Open State: Brings the dock back into view */
+        .interactive-dock.is-open {
+            transform: translate(-50%, 0);
+            box-shadow: 0 0 10px rgba(167, 139, 250, 0.4), 0 -4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 4. Icon Hover Effect */
+        .dock-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .dock-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            color: var(--brand-light);
+            text-shadow: 0 0 5px rgba(167, 139, 250, 0.5);
+        }
+
+        .dock-icon-wrapper {
+            transition: transform 0.3s ease;
+        }
+
+        .dock-item:hover .dock-icon-wrapper {
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.7);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="p-8 text-center">
+        <h1 class="text-4xl font-extrabold mb-4">Robotics Homepage Content</h1>
+        <p class="text-xl text-gray-300">The navigation dock is fixed and hidden at the very bottom.</p>
+        <p class="text-gray-500 mt-16">Hover over the small purple handle at the bottom to reveal it.</p>
+        <div class="h-[100vh]"></div> <!-- Filler content -->
+        <p class="text-gray-500 mt-16">More content to ensure scrolling</p>
+    </div>
+
+    <!-- 
+        INTERACTIVE HIDDEN DOCK
+        - fixed bottom-0: Anchors it to the bottom of the viewport.
+        - left-1/2 -translate-x-1/2: Centers the dock horizontally.
+        - interactive-dock class handles the default hidden state.
+        - rounded-t-2xl: Only round the top corners for a clean slide-up effect.
+    -->
+    <nav id="product-dock"
+        class="fixed bottom-0 left-1/2 z-50 dock-glass interactive-dock max-w-lg w-full rounded-t-2xl border border-brand-light/30 p-2 sm:p-4">
+
+        <!-- 
+            HANDLE/TOGGLE AREA
+            This is the visible 30px high section that the user can hover over.
+        -->
+        <div id="dock-handle"
+            class="absolute top-0 left-0 right-0 h-[30px] flex items-center justify-center cursor-pointer -translate-y-full px-4"
+            aria-label="Toggle Product Navigation Dock">
+            <div class="w-10 h-1 bg-brand-light/70 rounded-full transition-transform duration-300" id="handle-bar">
+            </div>
+        </div>
+
+        <!-- Dock Content -->
+        <div class="container mx-auto px-2 pt-2">
+
+            <h3 class="text-center text-sm font-bold text-brand-light mb-2">Product Categories</h3>
+
+            <!-- Three-column grid for product categories -->
+            <div class="grid grid-cols-3 gap-2 sm:gap-4 text-center">
+
+                <!-- Item 1: Kits -->
+                <a href="#"
+                    class="dock-item flex flex-col items-center p-1 rounded-full text-xs sm:text-sm text-gray-300">
+                    <div
+                        class="dock-icon-wrapper w-10 h-10 sm:w-12 sm:h-12 aspect-square rounded-full flex items-center justify-center bg-brand-dark/50 border border-brand-light/70 mb-0.5">
+                        <i data-lucide="wrench" class="w-5 h-5 sm:w-6 sm:h-6 text-brand-light"></i>
+                    </div>
+                    <span class="font-semibold whitespace-nowrap">Kits</span>
+                </a>
+
+                <!-- Item 2: Apparel --><a href="#"
+                    class="dock-item flex flex-col items-center p-1 rounded-full text-xs sm:text-sm text-gray-300">
+                    <div
+                        class="dock-icon-wrapper w-10 h-10 sm:w-12 sm:h-12 aspect-square rounded-full flex items-center justify-center bg-brand-dark/50 border border-brand-light/70 mb-0.5">
+                        <i data-lucide="shirt" class="w-5 h-5 sm:w-6 sm:h-6 text-brand-light"></i>
+                    </div>
+                    <span class="font-semibold whitespace-nowrap">Apparel</span>
+                </a>
+
+                <!-- Item 3: IT & Gear --><a href="#"
+                    class="dock-item flex flex-col items-center p-1 rounded-full text-xs sm:text-sm text-gray-300">
+                    <div
+                        class="dock-icon-wrapper w-10 h-10 sm:w-12 sm:h-12 aspect-square rounded-full flex items-center justify-center bg-brand-dark/50 border border-brand-light/70 mb-0.5">
+                        <i data-lucide="monitor-dot" class="w-5 h-5 sm:w-6 sm:h-6 text-brand-light"></i>
+                    </div>
+                    <span class="font-semibold whitespace-nowrap">IT & Gear</span>
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Initialize Lucide Icons and Add Interaction Logic -->
+    <script>
+        lucide.createIcons();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const dock = document.getElementById('product-dock');
+            const handle = document.getElementById('dock-handle');
+            const handleBar = document.getElementById('handle-bar');
+
+            if (handle && dock) {
+                // 1. Open on handle mouseenter
+                handle.addEventListener('mouseenter', () => {
+                    dock.classList.add('is-open');
+                    handleBar.classList.add('opacity-0');
+                    handle.ariaLabel = "Hide Product Navigation Dock";
+                });
+
+                // 2. Close when mouse leaves the entire dock area
+                // This ensures the dock stays open even if the mouse moves off the small handle 
+                // but remains on the larger dock body.
+                dock.addEventListener('mouseleave', () => {
+                    dock.classList.remove('is-open');
+                    handleBar.classList.remove('opacity-0');
+                    handle.ariaLabel = "Show Product Navigation Dock";
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
