@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics - Next-Gen Automation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-main': 'var(--brand-main)',
+                        'brand-dark': 'var(--brand-dark)',
+                        'brand-light': 'var(--brand-light)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* --- 1. CSS Variables & Base Styles --- */
+        :root {
+            --brand-main: #7C5FDC;
+            --brand-dark: #6B46C1;
+            --brand-light: #A78BFA;
+            --header-dark: #1a1a2e;
+            --bg-dark: #0A0A0E;
+            --purple-accent: #6C40C5;
+            --purple-light: #A886F7;
+            --text-light: #E0E0E0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #FFFFFF;
+            min-height: 100vh;
+        }
+
+        /* --- 2. Header & Navigation Styles --- */
+        .glass-effect {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .header-content {
+            height: 60px;
+        }
+
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .menu-icon span {
+            width: 24px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .hamburger-menu-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            width: 300px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(168, 85, 247, 0.3);
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 50;
+            margin-top: 2px;
+        }
+
+        .hamburger-menu-wrapper:hover .hamburger-menu-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .menu-item-placeholder {
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(168, 85, 247, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid rgba(168, 85, 247, 0.5);
+        }
+
+        /* --- 3. Search Overlay Styles --- */
+        #searchOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 10vh;
+            z-index: 50;
+        }
+
+        .search-popup {
+            width: 90%;
+            max-width: 700px;
+            position: relative;
+            transform: translateY(-20px);
+            animation: slideDown 0.3s forwards;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 3.5rem 1rem 3.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--purple-light);
+            border-radius: 12px;
+            font-size: 1.2rem;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-icon-wrapper {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--purple-light);
+        }
+
+        .search-close-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--purple-light);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .search-close-btn:hover {
+            color: red;
+        }
+
+
+        /* --- 4. Hero Section Styles --- */
+        .hero-fullscreen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content-wrapper {
+            height: 100%;
+            width: 100%;
+            max-width: 1280px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 2rem;
+        }
+
+        .hero-text-container {
+            max-width: 500px;
+            text-align: right;
+        }
+
+        .hero-title-accent {
+            background: linear-gradient(135deg, #ffffff 0%, #A78BFA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Animation Styles */
+        @keyframes slideInUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            opacity: 0;
+            animation: slideInUpFade 1s ease-out 0.5s forwards;
+        }
+
+        .hero-subtitle {
+            opacity: 0;
+            animation: slideInUpFade 1s ease-out 0.7s forwards;
+        }
+
+        .hero-button {
+            opacity: 0;
+            animation: slideInUpFade 1s ease-out 0.9s forwards;
+        }
+
+        /* --- 5. Category Section Styles (Simplified for brevity) --- */
+        .category-panel {
+            position: relative;
+            min-height: 500px;
+            min-width: 300px;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-scroll-container {
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 1rem;
+        }
+
+        /* --- 6. Floating Dock Styles (New) --- */
+        .dock-glass {
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease-out;
+        }
+
+        .floating-dock {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 30;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 50px;
+            padding: 8px 16px;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .dock-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dock-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            color: var(--brand-light);
+            text-shadow: 0 0 5px rgba(167, 139, 250, 0.5);
+        }
+
+        .dock-icon {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+
+        /* --- 7. Footer Styles --- */
+        .footer-blend {
+            border-radius: 0;
+            margin: 0;
+            box-shadow: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        .glow-link {
+            transition: all 0.3s ease;
+        }
+
+        .glow-link:hover {
+            color: var(--brand-light) !important;
+            text-shadow: 0 0 5px rgba(167, 139, 250, 0.8);
+            transform: translateY(-1px);
+        }
+    </style>
+    <script>
+        function toggleSearch() {
+            const overlay = document.getElementById('searchOverlay');
+            overlay.style.display = overlay.style.display === 'flex' ? 'none' : 'flex';
+            if (overlay.style.display === 'flex') {
+                document.getElementById('searchInput').focus();
+            }
+        }
+
+        function handleImageSearch(event) {
+            console.log("Image selected for search:", event.target.files[0].name);
+            toggleSearch();
+        }
+    </script>
+</head>
+
+<body class="text-white">
+
+    <div id="searchOverlay">
+        <div class="search-popup">
+            <div class="relative">
+                <div class="search-icon-wrapper">
+                    <i class="fas fa-search w-6 h-6"></i>
+                </div>
+                <input type="text" id="searchInput" placeholder="Search for products, kits, hardware..."
+                    class="search-input focus:outline-none" autofocus>
+                <button class="search-close-btn" onclick="toggleSearch()">
+                    <i class="fas fa-times w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <header class="glass-effect border-b border-purple-500/30 overflow-hidden sticky top-0 z-40">
+        <div class="notification-banner border-b border-purple-500/20 px-4 md:px-8 py-1 text-center">
+            <p class="text-xs text-purple-200" id="notificationText">
+                🎉 Special Offer: Get 20% off on all robotics kits! Use code: ROBOT20
+            </p>
+        </div>
+
+        <div class="flex items-center justify-between px-4 md:px-8 py-1 header-content">
+            <div class="hamburger-menu-wrapper relative">
+                <button class="menu-icon p-1.5 hover:bg-purple-500/20 rounded-lg transition-all">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="hamburger-menu-dropdown">
+                    <h3 class="text-xl font-bold mb-4" style="color: var(--purple-light);">Menu</h3>
+                    <div class="menu-item-placeholder">
+                        <p class="text-sm text-gray-300">Kits & Tutorials</p>
+                    </div>
+                    <div class="menu-item-placeholder">
+                        <p class="text-sm text- gray-300">Hardware Components</p>
+                    </div>
+                    <div class="menu-item-placeholder">
+                        <p class="text-sm text-gray-300">Support & FAQ</p>
+                    </div>
+                    <div class="menu-item-placeholder">
+                        <p class="text-sm text-gray-300">About Us</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full border-2 border-purple-400 overflow-hidden relative">
+                    <img src="img/logo/logo_high_png[1].png" alt="Robotics Logo"
+                        class="w-full h-full object-cover rounded-full scale-125">
+                </div>
+                <h1 class="text-xl md:text-2xl font-bold text-white">Robotics</h1>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="toggleSearch()"
+                    class="p-2 text-purple-300 hover:text-white hover:bg-purple-500/20 rounded-full transition-all action-btn">
+                    <i class="fas fa-search w-4 h-4"></i>
+                </button>
+
+                <button
+                    class="px-3 py-1 border-2 border-purple-400 hover:bg-purple-500/20 rounded-full font-semibold transition-all text-purple-300 hover:text-white text-xs flex items-center gap-1.5 action-btn">
+                    <i class="fas fa-shopping-cart w-3.5 h-3.5"></i>
+                    Cart
+                </button>
+
+                <button
+                    class="px-3 py-1 border-2 border-purple-400 hover:bg-purple-500/20 rounded-full font-semibold transition-all text-purple-300 hover:text-white text-xs flex items-center gap-1.5 action-btn">
+                    <i class="fas fa-user-circle w-3.5 h-3.5"></i>
+                    Login
+                </button>
+            </div>
+        </div>
+    </header>
+
+
+    <main>
+        <section class="hero-fullscreen relative overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center hero-bg-image"
+                style="background-image: url('img/picture/hero%20banner.png');">
+                <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+            </div>
+
+            <div class="absolute inset-0 flex items-center justify-center hero-animated-image" style="z-index: 5;">
+                <div class="hero-image-container opacity-0">
+                    <img src="img/picture/hero%20banner.png" alt="Robotics Hero"
+                        class="max-w-md md:max-w-2xl lg:max-w-4xl w-full h-auto" style="opacity: 0.3;">
+                </div>
+            </div>
+
+            <div class="relative z-10 hero-content-wrapper px-4 md:px-8 lg:px-12">
+                <div class="hero-text-container">
+                    <h1
+                        class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-tight tracking-tight mb-4 hero-title text-white">
+                        Design the Future—<br><span class="hero-title-accent">We Supply the Rest.</span>
+                    </h1>
+                    <p class="text-base md:text-lg lg:text-xl xl:text-2xl mt-4 hero-subtitle text-white">
+                        More Than Components. A Creator's Ecosystem.
+                    </p>
+                    <div class="hero-button-container mt-8">
+                        <button
+                            class="px-8 py-3 text-base md:text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition duration-300 hero-button"
+                            style="background-color: var(--purple-accent); color: white;">
+                            Explore Products
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12" style="color: var(--purple-light);">
+                <span
+                    style="background: linear-gradient(135deg, var(--purple-light) 0%, var(--purple-accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    Shop by Category
+                </span>
+            </h2>
+            <div class="category-scroll-container flex gap-6">
+
+                <div class="category-panel flex-shrink-0 w-full md:w-1/3 lg:w-1/3">
+                    <div class="category-bg-image" style="background-color: rgba(108, 64, 197, 0.2);">
+                        <div class="w-full h-full flex items-center justify-center">
+                            <i class="fas fa-box text-9xl opacity-30" style="color: var(--purple-light);"></i>
+                        </div>
+                    </div>
+                    <div class="category-overlay"></div>
+                    <div class="category-content">
+                        <h3 class="category-title">KITS</h3>
+                        <a href="#" class="category-shop-btn text-white font-semibold">
+                            SHOP NOW →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="category-panel flex-shrink-0 w-full md:w-1/3 lg:w-1/3">
+                    <div class="category-bg-image" style="background-color: rgba(168, 134, 247, 0.2);">
+                        <div class="w-full h-full flex items-center justify-center">
+                            <i class="fas fa-tshirt text-9xl opacity-30" style="color: var(--purple-light);"></i>
+                        </div>
+                    </div>
+                    <div class="category-overlay"></div>
+                    <div class="category-content">
+                        <h3 class="category-title">APPAREL</h3>
+                        <a href="#" class="category-shop-btn text-white font-semibold">
+                            SHOP NOW →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="category-panel flex-shrink-0 w-full md:w-1/3 lg:w-1/3">
+                    <div class="category-bg-image" style="background-color: rgba(108, 64, 197, 0.2);">
+                        <div class="w-full h-full flex items-center justify-center">
+                            <i class="fas fa-microchip text-9xl opacity-30" style="color: var(--purple-light);"></i>
+                        </div>
+                    </div>
+                    <div class="category-overlay"></div>
+                    <div class="category-content">
+                        <h3 class="category-title">IT & GEARS</h3>
+                        <a href="#" class="category-shop-btn text-white font-semibold">
+                            SHOP NOW →
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="py-20 text-center">
+            <p class="text-xl text-purple-300">More sections like Popular Products and Custom Builds go here...</p>
+        </section>
+
+    </main>
+
+    <div class="floating-dock dock-glass">
+        <a href="#" class="dock-item">
+            <i class="fas fa-home dock-icon"></i>
+            <span class="text-xs">Home</span>
+        </a>
+        <a href="#categoryScroll" class="dock-item">
+            <i class="fas fa-th-large dock-icon"></i>
+            <span class="text-xs">Categories</span>
+        </a>
+        <a href="#" class="dock-item">
+            <i class="fas fa-headset dock-icon"></i>
+            <span class="text-xs">Support</span>
+        </a>
+        <a href="#" class="dock-item">
+            <i class="fas fa-user dock-icon"></i>
+            <span class="text-xs">Account</span>
+        </a>
+    </div>
+
+    <footer class="glass-effect border-t border-purple-500/30 footer-blend text-white pt-8 pb-4">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div>
+                <h4 class="font-bold text-lg mb-4" style="color: var(--purple-light);">Company</h4>
+                <ul>
+                    <li class="mb-2"><a href="#" class="text-sm text-gray-400 glow-link hover:text-white">About Us</a>
+                    </li>
+                    <li class="mb-2"><a href="#" class="text-sm text-gray-400 glow-link hover:text-white">Careers</a>
+                    </li>
+                    <li class="mb-2"><a href="#" class="text-sm text-gray-400 glow-link hover:text-white">Press</a></li>
+                    <li class="mb-2"><a href="#"
+                            class="text-sm text-gray-400 glow-link hover:text-white">Partnerships</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-lg mb-4" style="color: var(--purple-light);">Products</h4>
+                <ul>
+                    <li class="mb-2"><a href="#" class="text-sm text-gray-400 glow-link hover:text-white">Starter
+                            Kits</a></li>
+                    <li class="mb-2"><a href="#" class="text-sm text-gray-400 glow-link hover:text-white">Actuators</a>
+                    </li>
+                    <li class="mb-2"><a href="#" class="text-sm text-gray-400 glow-link hover:text-white">Sensors</a>
+                    </li>
+                    <li class="mb-2"><a href="#" class="text-sm text-gray-400 glow-link hover:text-white">Custom
+                            Orders</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-lg mb-4" style="color: var(--purple-light);">Support</h4>
+                <ul>
+                    <li class="mb-2"><a href="#" class="text-sm text-gray-400 glow-link hover:text-white">Contact Us</a>
+                    </li>
+                    <li class="mb-2"><a href="#" class="text-sm text-gray-400 glow-link hover:text-white">FAQ</a></li>
+                    <li class="mb-2"><a href="#" class="text-sm text-gray-400 glow-link hover:text-white">Shipping &
+                            Returns</a></li>
+                    <li class="mb-2"><a href="#"
+                            class="text-sm text-gray-400 glow-link hover:text-white">Documentation</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-lg mb-4" style="color: var(--purple-light);">Connect</h4>
+                <div class="flex space-x-4 mb-4">
+                    <a href="#" class="text-gray-400 hover:text-purple-300 transition-colors"><i
+                            class="fab fa-facebook-f text-lg"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-purple-300 transition-colors"><i
+                            class="fab fa-twitter text-lg"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-purple-300 transition-colors"><i
+                            class="fab fa-linkedin-in text-lg"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-purple-300 transition-colors"><i
+                            class="fab fa-github text-lg"></i></a>
+                </div>
+                <p class="text-xs text-gray-500 mt-6">&copy; 2025 Robotics. All rights reserved.</p>
+                <p class="text-xs text-gray-500"><a href="#" class="hover:text-purple-300">Privacy Policy</a> | <a
+                        href="#" class="hover:text-purple-300">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
